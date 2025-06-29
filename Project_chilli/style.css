@@ -1,0 +1,177 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+h1{
+    font-size: 24px;
+}
+.body{
+    background-image: url(img/Chili\ BG.jpg);
+    font-family: Arial, Helvetica, sans-serif;
+    background-position: center;
+    background-size: cover;
+    height: 100vh;
+}
+ul{
+    text-decoration: none;
+    display: flex;
+   
+}
+.head{
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    padding: 10px;
+    color: yellow;
+    cursor: pointer;
+
+}
+.main{
+   margin-left: 30px;
+   height: 80vh;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+}
+#one{
+    padding: 10px;
+    font-size: 40px;
+    color: red;
+}
+#two{
+    padding: 10px;
+    font-size: 16px;
+    color: yellow;
+}
+.contact{
+    padding: 10px;
+    font-size: 16px;
+    color: white;
+}
+.btn{
+    padding: 10px;
+    margin: 10px 0px 0px 10px;
+    background-color:#56e7b7;
+    border-radius: 10px;
+    color: rgb(250, 247, 247);
+    width: 180px;
+}
+.menu{
+    font-size: 16px;
+}
+.loc{
+        font-size: 16px;
+}
+ul>i,li{
+    display: flex;
+    
+}
+.fa-location-dot{
+    margin-left: 15vw;
+    margin-top: 2px;
+}
+.fa-solid{
+    margin-top: 1px;
+    margin-right: 2px;
+}
+:hover.h1{
+       color: red;
+}
+:hover.menu{
+       color: red;
+}
+:hover.loc{
+       color: red;
+}
+.menus{
+    background-color: rgb(83, 86, 88);
+     font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    display: grid;
+    grid-template-areas: 
+    "menu menu menu"
+    "menu1 menu2 menu3"
+    "loc loc loc";
+    grid-template-rows: 30px 1fr 30px;
+    grid-template-columns: 1fr 1fr 1fr;
+    flex-wrap: wrap;
+}
+.topmenu{
+    grid-area: menu;
+}
+.menu1{
+    grid-area: menu1;
+}
+.menu2{
+    grid-area: menu2;
+}
+.menu3{
+    grid-area: menu3;
+}
+.location{
+    grid-area: loc;
+}
+h3{
+    text-align: center;
+    color: aquamarine;
+    margin: 10px;
+    
+}
+.topmenu>h2{
+    text-align: center;
+    color: red;
+    font-size: 24px;
+}
+.location{
+    text-align: center;
+    color: red;
+   
+}
+.menu1>div{
+    margin: 8px;
+    display: flex;
+    justify-content: space-between;
+}
+.menu2>div{
+    margin: 8px;
+    display: flex;
+    justify-content: space-between;
+}
+.menu3>div{
+    margin: 8px;
+      display: flex;
+    justify-content: space-between;
+}
+.menus>div,span{
+    font-size: 18px;
+}
+.menu1,.menu2,.menu3{
+    margin: 20px;
+}
+.loc1,.loc2,.loc3{
+    margin: 10px;
+    text-align: center;
+    font-style: italic;
+}
+.icons{
+    padding: 10px;
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+a{
+    color: yellow;
+    text-decoration: none;
+}
+:hover.a{
+    color: red;
+}
+@media screen and (max-width:750px) {
+    .menus{
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+    }
+}
+
+
