@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Viewer</title>
+  <style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f0f2f5;
+    margin: 20px;
+  }
+
+  h2 {
+    text-align: center;
+    color: #333;
+  }
+
+  #productList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    width: 220px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.3s ease, background 0.3s ease;
+  }
+
+  .card img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+  }
+
+  .card:hover {
+    background: #eaf4ff;
+    transform: translateY(-5px);
+  }
+
+  .card:hover img {
+    transform: scale(1.1);
+  }
+
+  .card h3 {
+    font-size: 16px;
+    margin: 10px 0 5px;
+  }
+
+  .card p {
+    color: #444;
+    font-weight: bold;
+  }
+</style>
+
+</head>
+<body>
+
+  <h2>🛍️ Product Viewer</h2>
+  <div id="productList">Loading products...</div>
+
+  <script>
+    // Fetch data from public API
+    fetch("https://fakestoreapi.com/products")
+      .then(response => response.json())
+      .then(data => {
+        const productContainer = document.getElementById("productList");
+        productContainer.innerHTML = ""; // Clear loading text
+
+        data.forEach(product => {
+          const card = document.createElement("div");
+          card.className = "card";
+
+          card.innerHTML = `
+            <img src="${product.image}" alt="${product.title}">
+            <h3>${product.title}</h3>
+            <p>₹ ${product.price}</p>
+          `;
+
+          productContainer.appendChild(card);
+        });
+      })
+      .catch(error => {
+        document.getElementById("productList").innerText = "Failed to load products.";
+        console.error("Error fetching API:", error);
+      });
+  </script>
+
+</body>
+</html>
