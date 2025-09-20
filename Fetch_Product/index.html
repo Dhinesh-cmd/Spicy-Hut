@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Viewer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h2>🛍️ Product Viewer</h2>
+  <div id="productList">Loading products...</div>
+
+  <script>
+    // Fetch data from public API
+    fetch("https://fakestoreapi.com/products")
+      .then(response => response.json())
+      .then(data => {
+        const productContainer = document.getElementById("productList");
+        productContainer.innerHTML = ""; // Clear loading text
+
+        data.forEach(product => {
+          const card = document.createElement("div");
+          card.className = "card";
+
+          card.innerHTML = `
+            <img src="${product.image}" alt="${product.title}">
+            <h3>${product.title}</h3>
+            <p>₹ ${product.price}</p>
+          `;
+          productContainer.appendChild(card);
+        });
+      })
+      .catch(error => {
+        document.getElementById("productList").innerText = "Failed to load products.";
+        console.error("Error fetching API:", error);
+      });
+  </script>
+
+</body>
+</html>

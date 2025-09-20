@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather App</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(to top, #87ceeb, #e0f7ff); /* Sky gradient */
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Cloud layers Starts */
+    .clouds {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 10000%;
+      height: 100%;
+      /* background: url("https://static.vecteezy.com/system/resources/previews/003/294/020/non_2x/seamless-pattern-hand-drawn-cloudy-different-on-blue-sky-background-vector.jpg") repeat-x; */
+      background: url("cloud_running.jpg");
+      background-size: contain;
+      animation: moveClouds 2500s linear infinite;
+      opacity: 0.7;
+    }
+
+    .clouds2 {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-repeat: no-repeat;
+      background: url("bg.jpg") ;
+      background-size: cover;
+      opacity: 0.4;
+    }
+
+    @keyframes moveClouds {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    @keyframes moveClouds2 {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+    /* Clould layers End */
+
+    /* Weather Card */
+    .weather-card {
+      position: relative;
+      z-index: 5;
+      width: 300px;
+      padding: 20px;
+      border-radius: 20px;
+      backdrop-filter: blur(15px);
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      color: #fff;
+      text-align: center;
+    }
+
+    .weather-card h2 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .weather-card p {
+      margin: 5px 0;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Cloud Animation Layers -->
+  <div class="clouds"></div>
+  <div class="clouds2"></div>
+
+  <!-- Weather Card -->
+  <div class="weather-card">
+    <h2>🌤 Jeddah</h2>
+    <p>32°C | Clouds</p>
+    <p>Humidity: 58%</p>
+    <p>Wind: 2.06 m/s</p>
+  </div>
+</body>
+</html>

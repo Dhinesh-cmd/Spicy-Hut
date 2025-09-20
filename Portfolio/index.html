@@ -4,89 +4,360 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dhinesh T | Portfolio</title>
+  <link rel="icon" type="image/png" sizes="128x128" href="img/Dhinesh_logo.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <!-- Alegreya Font -->
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
-
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
     <!-- Navbar -->
-    <div class="navbars"></div>
-    <div class="navbar">
-      <div class="logo">D</div>
+    <div class="navbar" data-aos="fade-down">
+      <div class="logo" id="logo">D</div>
       <div class="nav-links">
-        <a href="#">Home</a>
-        <a href="#">About</a>
-        <a href="#">Projects</a>
-        <a href="#">Contact</a>
+        <a href="#home" class="nav-link"> Home</a>
+        <a href="#skills" class="nav-link"> Skills</a>
+        <a href="#about" class="nav-link"> About</a>
+        <a href="#project" class="nav-link">Projects</a>
+        <a href="#contact" class="nav-link">Contact</a>
       </div>
       <div class="bar">
         <span class="toggle-theme" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
           <i class="fas fa-sun" id="themeIcon"></i></span>
-        <span class="fa-solid fa-bars"></span>
+        <span class="fa-solid fa-bars" id="menuIcon" onclick="menuBar()"></span>
       </div>
     </div>
 
     <!-- Main Section -->
+     <section id="home">
+     <h1>.</h1>
     <div class="main-content">
       <!-- Left: Hero Text -->
-      <div class="hero">
-        <h3>Hi, this is</h3>
+      <div class="hero" data-aos="fade-up">
+        <h3>Hi👋, this is</h3>
         <h1>Dhinesh,</h1>
         <h2>Full Stack Developer</h2>
         <p>
-          A passionate <span class="span">Java - Full Stack Developer</span> who loves building tech that makes life easier.
+          A passionate <span class="span">Java - Full Stack Developer</span> who loves building tech that makes life easier.  </p>
         <div class="buttons">
-          <a href="#" class="btn">Projects</a>
-          <a href="#" class="btn">Get Resume</a>
-          <a href="#" class="btn">Hire Me</a>
+          <a href="#project" class="btn">View My Work <i class="fa-solid fa-angles-down"></i> </a>
+         <a href="Resume/DhineshT_Resume.pdf" download class="btn"> Get Resume <i class="fa-solid fa-circle-arrow-down"></i></a>
         </div>
       </div>
 
       <!-- Center: Profile Image -->
-      <img class="profile-img" src="img/WhatsApp Image 2025-07-15 at 18.42.07_e8574ad5.jpg" alt="Dhinesh Profile" />
+      <img class="profile-img" src="img/Profile-dp.jpg" alt="Dhinesh Profile"  data-aos="zoom-in"/>
 
       <!-- Right: Social Icons -->
       <div class="social-icons">
-        <a href="#"><i class="fab fa-github"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
-        <a href="#"><i class="fab fa-linkedin"></i></a>
-        <a href="#"><i class="fas fa-envelope"></i></a>
+        <a href="https://github.com/Dhinesh-cmd" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="tel:9344848160" target="_blank"><i class="fa-solid fa-phone"></i></a>
+        <a href="https://www.linkedin.com/in/dhinesh178/" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="mailto:dhinesht.dev@gmail.com" target="_blank"><i class="fas fa-envelope"></i></a>
       </div>
     </div>
 
     <!-- Scroll Down -->
-    <div class="scroll-down">
-      Scroll Down
-      <i class="fas fa-angle-down"></i>
+    <div class="scroll-down" id="scroll" data-aos="fade-up">
+    <a href="#skills">Scroll Down
+     <i class="fas fa-angle-down"></i></a>
     </div>
+    </section>
   </div>
 
+
+  
+   <!--skills -->
+<section class="skills-section" id="skills">
+    <h2>Skills & Technologies</h2>
+    <div class="underline"></div>
+
+    <div class="skills-container">
+        <!-- Frontend -->
+        <div class="skill-card">
+            <div class="skill-icon frontend-icon">
+                <i class="fa-solid fa-globe"></i>
+            </div>
+            <h3>Frontend</h3>
+            <div class="tags">
+                <span class="tag">HTML</span>
+                <span class="tag">CSS</span>
+                <span class="tag">Java Script</span>
+            </div>
+        </div>
+
+        <!-- Backend -->
+        <div class="skill-card">
+            <div class="skill-icon backend-icon">
+                <i class="fa-solid fa-gear"></i>
+            </div>
+            <h3>Backend</h3>
+            <div class="tags">
+                <span class="tag">Java</span>
+                <span class="tag">Spring Boot</span>
+                <span class="tag">Rest Apis</span>
+            </div>
+        </div>
+
+        <!-- Database & Tools -->
+        <div class="skill-card">
+            <div class="skill-icon database-icon">
+                <i class="fa-solid fa-database"></i>
+            </div>
+            <h3>Database and Tools</h3>
+            <div class="tags">
+                <span class="tag">MySQL</span>
+                <span class="tag">Git</span>
+                <span class="tag">VsCode</span>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- About -->
-   <!-- What I Do Section -->
-<section class="what-i-do">
-  <h2 class="section-heading">What I do?</h2>
-  <div class="services">
-    <div class="service">
-      <i class="fas fa-code"></i>
-      <p>Frontend</p>
-    </div>
-    <div class="service">
-      <i class="fas fa-server"></i>
-      <p>Backend</p>
-    </div>
-    <div class="service">
-      <i class="fas fa-mobile-alt"></i>
-      <p>Native Apps</p>
+ <section id="about">
+ <main class="about" id="about">
+  <div class="abt-left" data-aos="fade-right">
+  <h2 class="abt-me">About Me</h2>
+  <div class="underline-about"></div>
+  <div class="abt-passion">
+  <i class="fa-regular fa-heart" id="heart-icon"></i><span class="abt-passion-span">Passion</span>
+  <p>"I love building tech that makes life easier — from healthcare tools to smart home solutions!"</p>
+  </div>
+  <p class="abt-p1">I'm doing a Java Full-Stack Developement course in SLA Institute, Chennai, with an IBM Certification. I enjoy building the logical and functional aspects of modern web applications.</p>
+  <p class="abt-p2">Building clean, efficient, and scalable solutions with a problem-solving mindset, focusing on performance and continuous improvement.</p>
+  <p class="abt-p4">I am open to exciting opportunities where I can grow and contribute effectively. I’m flexible with working hours and comfortable working from different locations as needed. With a positive attitude and willingness to adapt, I’m ready to take on new challenges in a dynamic environment.</p>
+  <p class="abt-p3"><i class="fa-solid fa-location-dot"></i><strong> Location - </strong>Chennai, India</p>
+  </div>
+  <div class="abt-right-img">
+    <!-- <img src="img/About-img.jpeg" alt="abt-img" data-aos="zoom-in-left"> -->
+    
+      <div class="abt-right-head">
+      <i class="fa-brands fa-reddit"></i>
+     <h2>Hobbies</h2></div>
+     <div class="abt-hobbies">
+      <h3>Cooking</h3>
+      <h3>Workout</h3>
+      <h3>Sports</h3>
+     </div>
+     
+  </div>
+ </main>
+
+ <!-- Education -->
+  <div class="milestones-section" data-aos="fade-up">
+    <header class="milestones-header" data-aos="fade-in">
+        <p style="color: var(--accent);">MY JOURNEY</p>
+        <h2>Education & Training</h2>
+        <p>A journey through my academic and professional development.</p>
+    </header>
+
+    <div class="timeline">
+        <div class="timeline-line"></div>
+
+        <div class="timeline-item left" data-aos="fade-left">
+            <div class="content">
+                <h3>Java Full Stack Developement</h3>
+                <h4>SLA IT Training Institute, K.K. Nagar, Chennai</h4>
+                <p class="date">July 2025 - Present</p>
+            </div>
+        </div>
+
+        <div class="timeline-item right" data-aos="fade-right">
+            <div class="content">
+                <h3>B.Sc. Biotechnology</h3>
+                <h4>SRM University, Kattankulathur, Chennai</h4>
+                <p class="date">2022 - 2025</p>
+                <p>CGPA: 7.00</p>
+            </div>
+        </div>
+        
+        <div class="timeline-item left" data-aos="fade-left">
+            <div class="content">
+                <h3>12th Grade</h3>
+                <h4>Agathiya Matriculation Higher Secondary School, Kanchipuram</h4>
+                <p class="date">2021 - 2022</p>
+                <p>Percentage: 79.26%</p>
+            </div>
+        </div>
+        
+        <div class="timeline-item right" data-aos="fade-right">
+            <div class="content">
+                <h3>10th Grade</h3>
+                <h4>Agathiya Matriculation Higher Secondary School, Kanchipuram</h4>
+                <p class="date">2019 - 2020</p>
+                <p>Percentage: 70.17%</p>
+            </div>
+        </div>
+
     </div>
   </div>
 </section>
+ <!--projects -->
+  
+   <section class="projects" id="project">
+  <h2 class="projects-head" data-aos="fade-up">Projects</h2>
+  <div class="underline-project"></div>
+  <div class="project-img">
+
+     <!-- Customer account book -->
+    <div class="project-card" data-aos="zoom-in-up">
+      <img class="img-proj" src="img/Account_Tracker.png" alt="Expense Tracker">
+       <div class="hover-info">
+      <p class="tech"><strong class="tech-head">Technology Used : </strong>HTML, CSS, JavaScript</p><br>
+      <p class="desc"><strong class="desc-head">Description :</strong><br>Built a Shop Account Tracker web app to digitize customer balance records, allowing shop owners to add, update, and track payments with a simple, responsive UI.</p>
+  </div>
+      <div class="project-info one-line">
+        <p>Smart Katha</p>
+        <div class="icons">
+          <a href="https://dhinesh-cmd.github.io/Customer_Balance_Book/" target="_blank">
+          <i class="fa-solid fa-link"></i></a>
+          <a href="https://github.com/Dhinesh-cmd/Customer_Balance_Book" target="_blank">
+          <i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- To-Do List -->
+    <div class="project-card" data-aos="zoom-in-up">
+      <img class="img-proj" src="img/To-do List.png" alt="To-do-list">
+      <div class="hover-info">
+      <p class="tech"><strong class="tech-head">Technology Used : </strong>HTML, CSS, JavaScript </p><br>
+      <p class="desc"><strong class="desc-head">Description :</strong><br>Stay organized and productive with this To-Do List. Easily add, complete, and manage tasks using local storage.</p>
+  </div>
+      <div class="project-info one-line">
+        <p>To-Do List ✅</p>
+        <div class="icons">
+          <a href="https://dhinesh-cmd.github.io/To-Do-List/" target="_blank">
+          <i class="fa-solid fa-link"></i></a>
+          <a href="https://github.com/Dhinesh-cmd/To-Do-List" target="_blank">
+          <i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weather Forcast -->
+    <div class="project-card" data-aos="zoom-in-up">
+      <img class="img-proj" src="img/Weather_API.png" alt="Weather_API">
+      <div class="hover-info">
+      <p class="tech"><strong class="tech-head">Technology Used : </strong>HTML, CSS, JavaScript </p><br>
+      <p class="desc"><strong class="desc-head">Description :</strong><br>Built a Weather Forecast project with live API data, showing temperature, conditions, and forecasts for any city</p>
+  </div>
+      <div class="project-info one-line">
+        <p>Weather API🌥️</p>
+        <div class="icons">
+          <a href="https://dhinesh-cmd.github.io/Weather_Forecast/" target="_blank">
+          <i class="fa-solid fa-link"></i></a>
+          <a href="https://github.com/Dhinesh-cmd/Weather_Forecast" target="_blank">
+          <i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+    </div>
+
+     <!-- XO Game -->
+    <div class="project-card" data-aos="zoom-in-up">
+      <img class="img-proj" src="img/XO Game img.png" alt="XO-Game">
+      <div class="hover-info">
+      <p class="tech"><strong class="tech-head">Technology Used : </strong>HTML, CSS, JavaScript</p><br>
+      <p class="desc"><strong class="desc-head">Description :</strong><br>Built a responsive Tic-Tac-Toe web app with — smooth UI, instant win/ draw detection, and quick reset.</p>
+  </div>
+      <div class="project-info one-line">
+        <p>Tic Tac Toe - Game❌⭕</p>
+        <div class="icons">
+          <a href="https://dhinesh-cmd.github.io/Tic_Tac_Toe/" target="_blank">
+          <i class="fa-solid fa-link"></i></a>
+          <a href="https://github.com/Dhinesh-cmd/Tic_Tac_Toe" target="_blank">
+          <i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+    </div>
+
+    
+
+  </div>
+</section>
+
+<!-- Contact -->
+<section class="contact-section" id="contact">
+  <h2 class="cnt-head" data-aos="fade-right">Contact</h2>
+  <div class="underline-cont"></div>
+  <div class="contact-container">
+    <!-- Left: Info Section -->
+    <div class="contact-info">
+      <h2 class="contact-title">Let's Connect</h2>
+      <p class="contact-description">
+       Let's have a chat. I'm always open for future opportunities. And interested to build a new connection
+      </p>
+      <div class="contact-details">
+        <div class="contact-card highlight" data-aos="zoom-in" data-aos-delay="100">
+          <div class="icon-circle">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <div>
+            <p class="label">Email</p>
+            <a href="mailto:dhinesht.dev@gmail.com" class="value">dhinesht.dev@gmail.com</a>
+          </div>
+        </div>
+        <div class="contact-card"  data-aos="zoom-in" data-aos-delay="200">
+          <div class="icon-circle">
+           <i class="fa-solid fa-phone"></i>
+          </div>
+          <div>
+            <p class="label">Mobile No</p>
+            <a href="tel:9344848160" target="_blank" class="value">+91 9344848160</a>
+          </div>
+        </div>
+        <div class="contact-card"  data-aos="zoom-in" data-aos-delay="300">
+          <div class="icon-circle">
+            <i class="fab fa-linkedin"></i>
+          </div>
+          <div>
+            <p class="label">LinkedIn</p>
+            <a href="https://www.linkedin.com/in/dhinesh178/" target="_blank" class="value">Dhinesh linkedin <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Form Section -->
+    <div class="contact-form-wrapper" >
+      <form class="contact-form" data-aos="fade-left">
+        <h2>Build a Connection<span class="cont-right-title"> - Have a vision? Let's collaborate and turn your ideas into reality. Reach out, and let's create something remarkable</span></h2>
+        <input type="text" placeholder="Your Name" class="input-field" id="userName"/>
+        <div id="userNameError"></div>
+        <input type="email" placeholder="Your Email" class="input-field" id="userEmail"/>
+        <div id="userEmailError"></div>
+        <textarea rows="5" placeholder="Your Message/Ideas" class="input-field" id="userMsg"></textarea>
+        <div id="userMsgError"></div>
+        <button type="submit" class="submit-btn" id="form-submit-btn">Send Message</button>
+        <div id="popup" class="popup">Thank you for the message!</div>
+      </form>
+    </div>
+  </div>
+</section>
+<!-- Footer -->
+ <footer class="footer animate-zoom">
+  <h2>Dhinesh T<span class="fun-fact">  -  “Coding is like a game, the more you play, the better you get.”</span></h2>
+  <a href="Resume/DhineshT_Resume.pdf" download class="footer-btn"> Get Resume <i class="fa-solid fa-circle-arrow-down"></i></a>
+  <div class="footer-text">
+  <p>Made with <i class="fa-regular fa-heart" id="footer-heart-icon"></i> and code by - Dhinesh</p>
+  <p>@ 2025 All Rights Reserved</p>
+  </div>
+ </footer>
+
+ <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+  </script>
 
 
-
-  <!-- Theme Toggle JS -->
-   <script src="script.js"></script>
+   <script src="script.js">
+   </script>
 </body>
 </html>

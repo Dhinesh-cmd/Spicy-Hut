@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        *{
+            margin: 0px;
+            padding: 0px;
+        }
+        .containers{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            gap: 20px;
+            background: linear-gradient(135deg, rgb(244, 152, 152),rgb(148, 80, 114));
+        }
+        button{
+            padding: 5px 14px;
+            background: linear-gradient(135deg, rgb(252, 252, 148),rgb(59, 94, 88));
+            color: rgb(61, 55, 55);
+            border: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        button:hover{
+            background: linear-gradient(135deg,rgb(59, 94, 88), rgb(252, 252, 148));
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="containers">
+    <h1>Stop watch</h1>
+    <div>
+        <span class="minutes">00</span>
+        <span class="minutes-symbol">:</span>
+        <span class="seconds">00</span>
+        <span>:</span>
+        <span class="miliSeconds">00</span>
+    </div>
+    <div>
+        <button class="start">Start</button>
+        <button class="stop">Stop</button>
+        <button class="reset">Reset</button>
+    </div>
+      </div>
+
+      <script>
+
+        const minutes = document.querySelector('.minutes');
+        const seconds = document.querySelector('.seconds');
+        const miliSeconds = document.querySelector('.miliSeconds');
+
+        const minutesSymbol = document.querySelector('.minutes-symbol');
+
+        const startBtn =  document.querySelector('.start');
+        const stopBtn =  document.querySelector('.stop');
+        const resetBtn =  document.querySelector('.reset');
+
+        let isPause = false;
+
+        setInterval(()=>{
+            if(miliSeconds.textContent<99 && !isPause){
+                miliSeconds.textContent = String(Number(miliSeconds.textContent)+1).padStart(2, '0')
+            }
+            else if(!isPause){
+                miliSeconds.textContent = '00'
+                addSeconds();
+            }
+            else{
+                
+            }
+        },10)
+function addSeconds(){
+    if(seconds.textContent <59){
+        seconds.textContent = String(Number(seconds.textContent)+1).padStart(2, '0')
+    }
+    else{
+        seconds.textContent = "00"
+        addMinutes()
+
+    }
+}
+function addMinutes(){
+    minutes.textContent = String(Number(minutes.textContent)+1).padStart(2, '0')
+}
+    
+stopBtn.addEventListener('click',()=>{
+    isPause = true;
+})
+startBtn.addEventListener('click', ()=>{
+    isPause = false;
+})
+resetBtn.addEventListener('click', ()=>{
+    seconds.textContent = '00'
+    minutes.textContent = '00'
+    miliSeconds.textContent = '00'
+    isPause = true;
+})
+        
+      </script>
+</body>
+</html>

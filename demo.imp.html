@@ -1,0 +1,2667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Balance Store</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+  <!-- Noto Sans Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
+  <!-- <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet"> -->
+   <style>
+    *{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: 'Noto Sans', sans-serif;
+    color: var(--black-one);
+}
+:root{
+    --blue-text: #175cd3;
+    --blue-bg: #D1E9FF;
+    --dark-black: #000000;
+    --black-one:#51515E;
+    --black-two:#8a8989;
+    --black-bg: #E3E8EF;
+    --red-text: #D92D20;
+    --red-bg: #FEE4E2;
+    --green-text: #12B76A;
+    --green-bg: #D1FADF;
+}
+@keyframes slideRight {
+    from { transform: translateX(300px); }
+    to { transform: translateX(0); }
+  }
+  .table-btns{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+.delete-row{
+    background-color: var(--red-bg);
+    border-radius: 5px;
+    border: none;
+    color: var(--red-text);
+    padding: 3px 0px;
+    cursor: pointer;
+}
+.edit-row{
+    background-color: var(--blue-bg);
+    border-radius: 5px;
+    border: none;
+    color: var(--blue-text);
+    padding: 3px 0px;
+    cursor: pointer;
+}
+#left-container{
+    width: 60vw;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: calc(100vh - 10px);
+    padding-bottom: 20px;
+}
+/* Nav Style */
+.nav-bar{
+    margin: 10px;
+    display: flex;
+    justify-content: space-between;
+    padding: 9px 16px;
+    border-bottom: 2px solid var(--black-bg);
+}
+@media screen and (max-width:900px){
+    .nav-bar{
+        padding: 9px 10px;
+    }
+    #shop-name{
+        font-size: 18px;
+    }
+    .nav-links div{
+        font-size: 14px;
+        gap: 5px;
+        white-space: nowrap;
+    }
+}
+@media screen and (max-width:700px){
+    #left-container{
+        width: 100vw;
+    }
+    .bottom-nav-left {
+    width: 100vw !important;
+ }
+}
+@media screen and (max-width:700px){
+  /* Right side asides full overlay */
+  .right-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 60% !important;
+    height: 100vh !important;
+    background: white;
+    z-index: 1000; /* mela varanum */
+    overflow-y: auto;
+    margin: 0 !important;
+    padding: 20px;
+  }
+  .customer-info{
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: white;
+    z-index: 1000; /* mela varanum */
+    overflow-y: auto;
+    margin: 0 !important;
+    padding: 20px;
+  }
+  #edit-customer-aside{
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 60% !important;
+    height: 100vh !important;
+    background: white;
+    z-index: 1000; /* mela varanum */
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin: 0 !important;
+    padding: 20px;
+}
+
+  /* Bottom nav inside aside full width */
+  .bottom-customer-nav-right{
+    width: 100% !important;
+    justify-content: space-evenly!important;
+  }
+  .bottom-customer-nav-right button{
+    margin-right: 40px;
+    min-width: 140px;
+    padding: 5px !important;
+  }
+  
+}
+
+#shop-name{
+    color: #000000;
+}
+.nav-links{
+    display: flex;
+    justify-content: space-between;
+    /* flex-wrap: nowrap; */
+    align-items: center;
+    gap: 20px;
+}
+.line{
+    background-color: var(--black-bg);
+    height: 2px;
+}
+#customer-count,#cleared-count{
+    background-color: var(--black-bg);
+    padding: 3px 8px;       
+    border-radius: 50%;      
+    font-size: 14px;
+    /* display: inline-block;  
+    white-space: nowrap; */
+}
+
+/* Amount section */
+
+.amount-details{
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+    padding: 10px;
+}
+
+/* .fa-check{
+    background-color: var(--green-bg);
+    margin-left: 5px;
+    color: var(--green-text);
+    font-size: 14px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    padding: 3px;
+}
+.fa-exclamation{
+    background-color: var(--red-bg);
+    margin-left: 5px;
+    color: var(--red-text);
+    font-size: 14px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    padding: 3px;
+} */
+
+.amount-paid span{
+    color: var(--green-text);
+}
+.amount-pending span{
+    color: var(--red-text);
+}
+   .filters-container {
+      display: flex;
+      gap: 30px;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 10px;
+    }
+
+    .filter-box {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    /* Input + Select common style */
+    .filter-box input,
+    .filter-box select {
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 14px;
+      min-width: 150px;
+    }
+
+    @media (min-width: 701px) and (max-width:951px){
+    .filter-box input,
+    .filter-box select{
+        min-width: 10px;
+        padding: 2px 4px;
+        font-size: 12px;  
+    }
+    .filters-container{
+        gap: 5px;
+    }
+    .search-wrapper i{
+        font-size: 10px;
+    }
+    }
+    @media screen and (max-width:580px){
+    .filter-box input,
+    .filter-box select{
+        min-width: 10px;
+        padding: 2px 4px;
+        font-size: 12px;  
+    }
+    .filters-container{
+        gap: 5px;
+    }
+    }
+    @media screen and (max-width:430px){
+        #Filter-by{
+            display: none;
+        }
+       #customers-head, #account-cleared-head{
+        font-size: 12px;
+        padding: 4px;
+       }
+       #shop-name{
+        font-size: 14px;
+       }
+       #edit-customer-aside{
+        width: 80% !important;
+       }
+    }
+
+    /* Search input icon */
+    .search-wrapper {
+      position: relative;
+    }
+    .search-wrapper input {
+      padding-left: 30px; /* space for icon */
+    }
+    .search-wrapper i {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--black-two);
+    }
+    .filter-box label{
+        color: var(--dark-black);
+        font-weight: 400;
+    }
+    .search-wrapper select{
+        padding-left: 30px;
+    }
+     .table-header {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--black-one);
+      padding: 6px 10px;
+      background: linear-gradient( to right, #d5d4d4, #dcd5d5);
+    }
+    .nav-links div {
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+            position: relative; /* For the blue underline */
+            padding-bottom: 8px; /* Space for the line */
+        }
+
+    .nav-links .active-link {
+            background-color: var(--blue-bg);
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: var(--blue-text);
+            font-weight: 500;
+        }
+
+        .nav-links .active-link .nav-link-text,
+        .nav-links .active-link #customer-count {
+            color: var(--blue-text);
+        }
+
+        /* Blue underline for active link */
+        .nav-links .active-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--blue-text);
+            border-radius: 2px;
+        }
+
+/* Customer lists */
+/* 
+#customers-list{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+#customers-list div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+} */
+
+.transaction-item {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border-radius: 8px;
+  gap: 16px;
+  font-family: Arial, sans-serif;
+}
+
+.profile-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #e0e6f5;
+  color: #5d6778;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.user-info {
+  flex-grow: 1;
+}
+
+.name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--dark-black);
+}
+
+.number {
+  font-size: 14px;
+  color: var(--black-two);
+  margin-top: 4px;
+}
+
+.transaction-amount {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.amount {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--red-text);
+}
+
+.youll-get {
+  font-size: 12px;
+  color: var(--black-two);
+  text-transform: uppercase;
+}
+
+#add-customer-btn{
+    width: 70%;
+    padding: 10px;
+    border-radius: 12px;
+    border: none;
+    background-color: var(--blue-text);
+    color: white;
+    cursor: pointer;
+}
+#add-customer-btn i{
+    color: white;
+    margin-right: 10px;
+}
+/* .bottom-nav-left{
+    background-color: rgb(246, 245, 250);
+    display: flex;
+    justify-content: center;
+    position: sticky;
+} */
+
+.bottom-nav-left {
+  background-color: rgb(246, 245, 250);
+  display: flex;
+  justify-content: center;
+  position: fixed; 
+  bottom: 0;      
+  width: 60vw;    
+  padding: 10px 0; 
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.05); 
+}
+
+.whole-content{
+    display: flex;
+    justify-content: space-between;
+}
+.right-container{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin-left: 10px;
+    margin-right: 10px;
+    gap: 15px;
+    width: 25%;
+}
+#add-customer-aside{
+    display: none;
+    /* animation: slideRight 0.5s forwards; */
+}
+
+.right-container input{
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid var(--black-two);
+}
+.right-container h2{
+    color: var(--dark-black);
+    margin-top: 5px;
+    margin-bottom: 0px;
+    gap: 0px;
+}
+.right-container-head{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.right-container-head span i {
+    font-size: 24px;
+    margin-top: 5px;
+    margin-bottom: 0px;
+    color: var(--black-two);
+}
+.bottom-nav-right{
+  display: flex;
+  justify-content: center;
+  position: fixed !important; 
+  bottom: 0 !important;      
+  width: 25%;    
+  padding: 10px 0; 
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.05); 
+}
+#add-customer-btn-final{
+    width: 70%;
+    padding: 10px;
+    border-radius: 12px;
+    border: none;
+    background-color: var(--blue-text);
+    color: white;
+    cursor: pointer;
+    position: sticky;
+}
+.right-container  #price{
+    margin-bottom: 10px;
+}
+.right-container label .optional{
+    color: var(--black-two);
+}
+.right-container .flex-label{
+    display: flex;
+    justify-content: space-between;
+}
+
+/* customer info */
+.customer-info{
+    width: 40vw;
+    display: none;
+}
+.customer-info {
+  max-height: 100%; /* Adjust this value as needed */
+  overflow-y: auto;
+}
+
+.bottom-customer-nav-right {
+  display: flex;
+  justify-content: space-around;
+  position: absolute; /* Change from 'fixed' to 'absolute' */
+  bottom: 0;
+  width: 100%;
+  background-color: white;
+  padding: 10px 0;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+}
+.transaction-amount div span i{
+    font-size: 14px;
+    margin: 5px;
+    border: 1px solid var(--black-two);
+    background-color: var(--black-bg);
+    color: var(--black-two);
+    padding-right: 20px;
+    padding-left: 6px;
+    padding-top: 3px;
+    padding-bottom: 2px;
+    border-radius: 8px;
+}
+
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: center;
+    }
+
+    th {
+      background: #007bff;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background: #f9f9f9;
+    }
+    li button{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: auto;
+    }
+
+    #add-new-product-btn{
+    width: 70%;
+    padding: 10px;
+    border-radius: 12px;
+    border: none;
+    background-color: var(--blue-bg);
+    color: var(--blue-text);
+    cursor: pointer;
+    max-width: 15vw;
+    }
+    #add-new-product-btn i{
+        color: var(--blue-text);
+    }
+    #add-amount-paid-btn{
+    width: 70%;
+    padding: 10px;
+    border-radius: 12px;
+    border: none;
+    background-color: var(--green-bg);
+    color: var(--green-text);
+    cursor: pointer;
+    max-width: 15vw;
+    }
+    #add-amount-paid-btn i{
+        color: var(--green-text);
+    }
+.bottom-customer-nav-right{
+  display: flex;
+  justify-content: space-around;
+  position: fixed; 
+  bottom: 0;
+  width: 40vw;          
+  padding: 10px 0; 
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.05); 
+}
+
+/* Edit customer aside */
+#edit-customer-aside{
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 30% ;
+    height: 100vh;
+    background: white;
+    z-index: 1000; /* mela varanum */
+    overflow-y: auto;
+    margin: 0;
+    padding: 20px;
+    
+}
+.edit-lable, #edit-customer-name, #edit-customer-number{
+    margin-top: 10px;
+}
+#edit-customer-name{
+    margin-bottom: 10px;
+}
+#update-customer-btn{
+    padding: 6px 14px;
+    width: 60%;
+    background-color: var(--green-bg);
+    border-radius: 12px;
+    color: var(--green-text);
+    border: none;
+}
+#edit-profile-btn{
+    width: 80%;
+    padding: 8px;
+}
+.edit-profile{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#delete-customer-btn-final{
+    width: 70%;
+    padding: 10px;
+    border-radius: 12px;
+    border: none;
+    background-color: var(--red-bg);
+    color: var(--red-text);
+    cursor: pointer;
+}
+#delete-customer-btn-final i{
+    color: var(--red-text);
+    margin-right: 5px;
+}
+
+/* Add customer amount paid  */
+#amount-pay-area {
+  /* animation: slideRight 0.5s forwards; */
+    position: fixed;
+    display: none;
+    top: 0;
+    right: 0;
+    width: 25% ;
+    height: 100%;
+    background: white;
+    z-index: 1000; /* mela varanum */
+    overflow-y: auto;
+    margin: 0;
+    padding: 20px;
+}
+#update-payment-btn{
+    width: 70%;
+    padding: 10px;
+    border-radius: 12px;
+    border: none;
+    background-color: var(--green-bg);
+    color: var(--green-text);
+    cursor: pointer;
+}
+
+   </style>
+</head>
+<body>
+  <div class="whole-content">
+  <section id="left-container">
+    <!-- <div class="nav-bar">
+    <h2 id="shop-name">Shop Name</h2>
+    <div class="nav-links">
+      <div id="customers-head" class="active-link">Customers <span id="customer-count" class="active-link-amount">0</span></div>
+      <div id="account-cleared-head">Account Cleared <span id="cleared-count">0</span></div>
+    </div>
+    </div> -->
+
+    <div class="nav-bar">
+            <h2 id="shop-name">Shop Name</h2>
+            <div class="nav-links">
+                <div id="customers-head" class="active-link"><span class="nav-link-text">Customers</span> <span id="customer-count" class="nav-count-badge">0</span></div>
+                <div id="account-cleared-head"><span class="nav-link-text">Account Cleared</span> <span id="cleared-count" class="nav-count-badge">0</span></div>
+            </div>
+        </div>
+
+    <div class="amount-details">
+      <div class="amount-paid">Amount Paid: <span id="amount-paid">₹0 </span></div>
+      <div class="amount-pending">Amount Pending: <span id="amount-pending">₹0 </span></div>
+    </div>
+    <div class="line"></div>
+     
+    <div class="filters-container">
+    <!-- Search -->
+    <div class="filter-box">
+      <label for="search">Search for customers</label>
+      <div class="search-wrapper">
+        <i class="fa fa-search"></i>
+        <input type="text" id="search" placeholder="Name or Phone Number">
+      </div>
+    </div>
+
+    <!-- Filter By -->
+    <div class="filter-box" id="Filter-by">
+      <label for="filter"> Filter By</label>
+      <div class="search-wrapper">
+        <i class="fa-solid fa-filter"></i>
+      <select id="filter">
+        <option>Select</option>
+        <option>Pending</option>
+        <option>Paid</option>
+      </select>
+      </div>
+    </div>
+
+    <!-- Sort By -->
+    <div class="filter-box">
+      <label for="sort">Sort By</label>
+     <div class="search-wrapper">
+     <i class="fa-solid fa-up-down"></i>
+      <select id="sort">
+        <option>Select</option>
+        <option>Name</option>
+        <option>Amount</option>
+      </select>
+    </div>
+  </div>
+</div>
+  
+  <div class="table-header">
+    <span>NAME</span>
+    <span>AMOUNT</span>
+  </div>
+
+  <!-- <div class="transaction-item">
+  <div class="profile-avatar">
+    <span>A</span>
+  </div>
+  <div class="user-info">
+    <div class="name">DHINESH</div>
+    <div class="number">91+ 9344848160</div>
+  </div>
+  <div class="transaction-amount">
+    <div class="amount">₹20</div>
+    <div class="youll-get">Pending</div>
+  </div>
+</div> -->
+<div id="customers-list"></div>
+
+<div class="bottom-nav-left">
+  <button id="add-customer-btn"><i class="fa-solid fa-user-plus"></i>Add Customer</button>
+</div>
+  </section>
+  <!-- Add Customer Details -->
+  <aside class="right-container" id="add-customer-aside">
+    <div class="right-container-head"> <h2>Add New Customer</h2> <span><i class="fa-solid fa-xmark"></i></span></div>
+    <div class="line"></div>
+    <label for="name">Customer Name <span style="color: red;">*</span></label>
+    <input type="text" id="customer-name">
+    <label for="text" class="flex-label">Phone Number <span class="optional">(optional)</span></label>
+    <input type="text" id="customer-number">
+    <label for="text" class="flex-label">Product Name <span class="optional">(optional)</span></label>
+    <input type="text" id="product-name">
+    <label for="text" class="flex-label">Quantity <span class="optional">(optional)</span> </label>
+    <input type="number" id="product-qty">
+    <label for="text">Product Price <span style="color: red;">*</span></label>
+    <input type="text" id="price">
+    <input type="date" id="date">
+    <div class="bottom-nav-right">
+    <button id="add-customer-btn-final">Add Customer Detail</button>
+  </div>
+</aside>
+
+<!-- Customer info -->
+  <section class="customer-info" id="customer-detail-right">
+    <!-- <div class="transaction-item" id="transaction-item-detail">
+  <div class="profile-avatar">
+    <span>A</span>
+  </div>
+  <div class="user-info">
+    <div class="name">DHINESH</div>
+    <div class="number">91+ 9344848160</div>
+  </div>
+  <div class="transaction-amount" id="transaction-amount-detail">
+    <div class="amount">₹20 <span><i class="fa-solid fa-gear"></i></span></div>
+  </div>
+</div>
+
+ <div class="amount-details">
+      <div class="amount-paid">Amount Paid: <span id="amount-paid-each">₹0 </span></div>
+      <div class="amount-pending">Total Pending: <span id="amount-pending-each">₹0 </span></div>
+    </div>
+
+    <table id="recordsTable">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+  <div class="bottom-customer-nav-right">
+    <button id="add-amount-paid-btn"><i class="fa-solid fa-plus"></i> Add Amount Paid</button>
+    <button id="add-new-product-btn"><i class="fa-solid fa-plus"></i> Add New Product</button>
+  </div> -->
+  </section>
+
+  <!-- edit customer info area -->
+
+  <aside class="right-container" id="edit-customer-aside">
+    <!-- <div class="right-container-head"> <h2>Customer Info</h2> <span><i class="fa-solid fa-xmark"></i></span></div>
+    <div class="line"></div>
+
+  <div class="transaction-item">
+  <div class="profile-avatar">
+    <span>A</span>
+  </div>
+  <div class="user-info">
+    <div class="name">DHINESH</div>
+    <div class="number">91+ 9344848160</div>
+  </div>
+  <div class="transaction-amount">
+    <div class="amount">₹20</div>
+    <div class="youll-get">Pending</div>
+  </div>
+</div>
+
+<div class="edit-profile"><button id="edit-profile-btn"><i class="fa-regular fa-pen-to-square"></i> Edit Profile</button></div>
+<div class="bottom-nav-right">
+<button id="delete-customer-btn-final"><i class="fa-solid fa-trash-can"></i>Delete Customer</button>
+</div> -->
+  </aside>
+
+  <!-- Add customer amount paid -->
+  <aside class="right-container" id="amount-pay-area">
+    <div class="right-container-head"> <h2 style="color:#12B76A;">Add Customer Payment</h2> <span id="close-amount-pay"><i class="fa-solid fa-xmark"></i></span></div>
+    <div class="line"></div>
+    <label for="text">Amount <span style="color: red;">*</span></label>
+    <input type="text" placeholder="₹">
+    <label for="text">Description <span class="optional">(optional)</span></label>
+    <textarea id="amount-paid-description" style="height: 200px;"></textarea>
+    <input type="date">
+    <div class="bottom-nav-right">
+    <button id="update-payment-btn">Update Payment</button>
+  </div>
+  </aside>
+  </div>
+
+  <script>
+const addCustomerBtn = document.getElementById("add-customer-btn");
+const addCustomerAside = document.getElementById("add-customer-aside");
+const closeBtn = addCustomerAside.querySelector(".fa-xmark");
+const customersList = document.getElementById("customers-list");
+const customerCountEl = document.getElementById("customer-count");
+const customerDetailRight = document.getElementById("customer-detail-right");
+const customerNameInput = document.getElementById("customer-name");
+const customerNumberInput = document.getElementById("customer-number");
+
+// 🔹 Update count helper
+function updateCustomerCount() {
+  let customers = JSON.parse(localStorage.getItem("customers")) || [];
+  customerCountEl.textContent = customers.length;
+}
+
+// Open form
+addCustomerBtn.addEventListener("click", () => {
+  addCustomerAside.style.display = "inherit";
+  addCustomerBtn.style.visibility = "hidden";
+  customerDetailRight.style.display = "none";
+  // customerNameInput.value = '';
+  // customerNumberInput.value = '';
+});
+
+// Close form
+closeBtn.addEventListener("click", () => {
+  addCustomerAside.style.display = "none";
+  addCustomerBtn.style.visibility = "visible";
+  customerDetailRight.style.display = "block";
+  document.getElementById("customer-name").value = ''
+  document.getElementById("customer-number").value = ''
+  document.getElementById("product-name").value =''
+  document.getElementById("product-qty").value =''
+  document.getElementById("price").value=''
+  document.getElementById("date").value = ''
+});
+
+// Add customer final button
+document.getElementById("add-customer-btn-final").addEventListener("click", function () {
+  let name = document.getElementById("customer-name").value.trim();
+  let number = document.getElementById("customer-number")?.value.trim() || "";
+  let product = document.getElementById("product-name")?.value.trim() || "";
+  let qty = document.getElementById("product-qty")?.value.trim() || "";
+  let price = document.getElementById("price").value.trim();
+  let date = document.getElementById("date")?.value.trim() || "";
+
+  if (name === "" || price === "") {
+    alert("Please fill all * required fields");
+    return;
+  }
+
+  let customers = [];
+  try {
+    customers = JSON.parse(localStorage.getItem("customers")) || [];
+    if (!Array.isArray(customers)) customers = [];
+  } catch (e) {
+    customers = [];
+  }
+
+  // ---- Check by NAME ----
+  let existingCustomer = customers.find(
+    (cust) => cust.name.toLowerCase() === name.toLowerCase()
+  );
+
+  if (existingCustomer) {
+    // ✅ Number update logic
+    if ((!existingCustomer.number || existingCustomer.number === "") && number) {
+      existingCustomer.number = number;
+    }
+
+    // Append new record
+    if (!existingCustomer.records) existingCustomer.records = [];
+
+    existingCustomer.records.push({
+      product: product || "-",
+      qty: qty || "-",
+      price: price || "0",
+      date: date || "-"
+    });
+
+    // Update total price
+    let oldPrice = parseFloat(existingCustomer.price) || 0;
+    let newPrice = parseFloat(price) || 0;
+    existingCustomer.price = (oldPrice + newPrice).toString();
+
+    // Save update
+    localStorage.setItem("customers", JSON.stringify(customers));
+    const items = document.querySelectorAll(".transaction-item");
+    items.forEach((itm) => {
+      const nm = itm.querySelector(".name").textContent;
+      if (nm === existingCustomer.name.toUpperCase()) {
+        itm.querySelector(".amount").textContent = `₹${existingCustomer.price}`;
+        itm.querySelector(".number").textContent = existingCustomer.number || "";
+      }
+    });
+
+    alert("Existing customer updated with new product");
+
+    resetForm();
+    addCustomerAside.style.display = "none";
+    addCustomerBtn.style.visibility = "visible";
+    updateCustomerCount();
+    return;
+  }
+
+  // ---- New customer ----
+  let customer = {
+    id: Date.now(),
+    name: name,
+    number: number || "",
+    price: price,
+    status: "Pending",
+    records: [
+      {
+        product: product || "-",
+        qty: qty || "-",
+        price: price || "0",
+        date: date || "-"
+      }
+    ]
+  };
+
+  customers.push(customer);
+  localStorage.setItem("customers", JSON.stringify(customers));
+
+  let container = document.createElement("div");
+  container.classList.add("transaction-item");
+  container.innerHTML = `
+    <div class="profile-avatar">
+      <span>${name.charAt(0).toUpperCase()}</span>
+    </div>
+    <div class="user-info">
+      <div class="name">${name.toUpperCase()}</div>
+      <div class="number">${number ? number : ""}</div>
+    </div>
+    <div class="transaction-amount">
+      <div class="amount">₹${price}</div>
+      <div class="youll-get">${customer.status}</div>
+    </div>
+  `;
+  customersList.appendChild(container);
+
+  resetForm();
+  addCustomerAside.style.display = "none";
+  addCustomerBtn.style.visibility = "visible";
+  updateCustomerCount();
+});
+
+// ---- Reset input form ----
+function resetForm() {
+  document.getElementById("customer-name").value = "";
+  if (document.getElementById("customer-number"))
+    document.getElementById("customer-number").value = "";
+  if (document.getElementById("product-name"))
+    document.getElementById("product-name").value = "";
+  if (document.getElementById("product-qty"))
+    document.getElementById("product-qty").value = "";
+  document.getElementById("price").value = "";
+  if (document.getElementById("date"))
+    document.getElementById("date").value = "";
+}
+
+// ---- On page load ----
+window.addEventListener("DOMContentLoaded", () => {
+  let customers = [];
+  try {
+    customers = JSON.parse(localStorage.getItem("customers")) || [];
+    if (!Array.isArray(customers)) customers = [];
+  } catch (e) {
+    customers = [];
+  }
+
+  customers.forEach((customer) => {
+    let container = document.createElement("div");
+    container.classList.add("transaction-item");
+    container.innerHTML = `
+      <div class="profile-avatar">
+        <span>${customer.name.charAt(0).toUpperCase()}</span>
+      </div>
+      <div class="user-info">
+        <div class="name">${customer.name.toUpperCase()}</div>
+        <div class="number">${customer.number ? customer.number : ""}</div>
+      </div>
+      <div class="transaction-amount">
+        <div class="amount">₹${customer.price}</div>
+        <div class="youll-get">${customer.status}</div>
+      </div>
+    `;
+    customersList.appendChild(container);
+  });
+
+  updateCustomerCount();
+});
+
+const customersLists = document.getElementById("customers-list");
+const customerInfoSection = document.querySelector(".customer-info");
+
+// Transaction item click → detail view
+customersLists.addEventListener("click", (e) => {
+  const item = e.target.closest(".transaction-item");
+  if (!item) return;
+
+  const name = item.querySelector(".name").textContent;
+  let customers = JSON.parse(localStorage.getItem("customers")) || [];
+  let customer = customers.find(
+    (cust) => cust.name.toUpperCase() === name
+  );
+  if (!customer) return;
+
+  customerInfoSection.innerHTML = "";
+
+  // Profile
+  const profileDiv = document.createElement("div");
+  profileDiv.classList.add("transaction-item");
+  profileDiv.id = "transaction-item-detail";
+  profileDiv.innerHTML = `
+    <div class="profile-avatar">
+      <span>${customer.name.charAt(0).toUpperCase()}</span>
+    </div>
+    <div class="user-info">
+      <div class="name">${customer.name.toUpperCase()}</div>
+      <div class="number">${customer.number || ""}</div>
+    </div>
+    <div class="transaction-amount" id="transaction-amount-detail">
+      <div class="amount">₹${customer.price} <span><i class="fa-solid fa-gear"></i></span></div>
+    </div>
+  `;
+
+  // Amount details
+  const amountDiv = document.createElement("div");
+  amountDiv.classList.add("amount-details");
+  amountDiv.innerHTML = `
+    <div class="amount-paid">Amount Paid: <span id="amount-paid-each">₹0</span></div>
+    <div class="amount-pending">Total Pending: <span id="amount-pending-each">₹${customer.price}</span></div>
+  `;
+
+  // Records Table
+  const table = document.createElement("table");
+  table.id = "recordsTable";
+  table.innerHTML = `
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Qty</th>
+        <th>Price</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  `;
+  const tbody = table.querySelector("tbody");
+
+  if (customer.records && Array.isArray(customer.records)) {
+    customer.records.forEach((rec) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${rec.product}</td>
+        <td>${rec.qty}</td>
+        <td>₹${rec.price}</td>
+        <td>${rec.date}</td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+
+  const bottomNav = document.createElement("div");
+  bottomNav.classList.add("bottom-customer-nav-right");
+  bottomNav.innerHTML = `
+    <button id="add-amount-paid-btn"><i class="fa-solid fa-plus"></i> Add Amount Paid</button>
+    <button id="add-new-product-btn"><i class="fa-solid fa-plus"></i> Add New Product</button>
+  `;
+
+  customerInfoSection.appendChild(profileDiv);
+  customerInfoSection.appendChild(amountDiv);
+  customerInfoSection.appendChild(table);
+  customerInfoSection.appendChild(bottomNav);
+
+  customerInfoSection.style.display = "block";
+});
+
+// ---- Add New Product button → open aside form ----
+document.addEventListener("click", (e) => {
+  if (e.target.id === "add-new-product-btn" || e.target.closest("#add-new-product-btn")) {
+    // Form open
+    addCustomerAside.style.display = "inherit";
+    addCustomerBtn.style.visibility = "hidden";
+    customerDetailRight.style.display = "none";
+
+    // Input fields
+    const customerNameInput = document.getElementById("customer-name");
+    const customerNumberInput = document.getElementById("customer-number");
+
+    // Current displayed customer
+    const currentCustomerDiv = document.getElementById("transaction-item-detail");
+    if (currentCustomerDiv) {
+      const name = currentCustomerDiv.querySelector(".name").innerText;
+      const number = currentCustomerDiv.querySelector(".number").innerText;
+
+      // Set input values
+      customerNameInput.value = name;
+      customerNumberInput.value = number || "";
+      console.log("Add New Product -> Name:", name, "Number:", number);
+    }
+  }
+});
+
+
+// 1️⃣ Settings icon click → edit-customer-aside open
+// document.addEventListener("click", (e) => {
+//     if (e.target.classList.contains("fa-gear") || e.target.closest(".fa-gear")) {
+//         const item = e.target.closest(".transaction-item");
+//         if (!item) return;
+
+//         const name = item.querySelector(".name").textContent;
+//         let customers = JSON.parse(localStorage.getItem("customers")) || [];
+//         let customer = customers.find(cust => cust.name.toUpperCase() === name);
+
+//         if (!customer) return;
+
+//         // Populate edit aside inputs
+//         const editAside = document.getElementById("edit-customer-aside");
+//         editAside.style.display = "block";
+//         const editcustomerinfo = document.getElementById('edit-profile-btn');
+//         editcustomerinfo.addEventListener('click', ()=>{
+//           editAside.innerHTML = `
+//             <div class="right-container-head">
+//                 <h2>Edit Customer</h2>
+//                 <span id="close-edit"><i class="fa-solid fa-xmark"></i></span>
+//             </div>
+//             <div class="line"></div><br>
+//             <label class='edit-lable'>Name</label><br>
+//             <input type="text" id="edit-customer-name"><br>
+//             <label class='edit-lable'>Number</label><br>
+//             <input type="text" id="edit-customer-number">
+//             <div class="bottom-nav-right">
+//                 <button id="update-customer-btn">Update</button>
+//             </div>
+//         `;
+//         })
+
+//         // Close X button
+//         editAside.querySelector("#close-edit").addEventListener("click", () => {
+//             editAside.style.display = "none";
+//         });
+
+//         // Update button
+//             document.querySelector("#update-customer-btn").addEventListener("click", () => {
+//             const newName = document.getElementById("edit-customer-name").value.trim();
+//             const newNumber = document.getElementById("edit-customer-number").value.trim();
+
+//             if (!newName) {
+//                 alert("Name cannot be empty");
+//                 return;
+//             }
+
+//             // Update customer object
+//             customer.name = newName;
+//             customer.number = newNumber;
+
+//             localStorage.setItem("customers", JSON.stringify(customers));
+
+//             // Update main UI list
+//             const allItems = document.querySelectorAll(".transaction-item");
+//             allItems.forEach(itm => {
+//                 const nm = itm.querySelector(".name").textContent;
+//                 if (nm === name) {
+//                     itm.querySelector(".name").textContent = newName.toUpperCase();
+//                     itm.querySelector(".number").textContent = newNumber;
+//                 }
+//             });
+
+//             alert("Customer updated successfully!");
+//             editAside.style.display = "none";
+//         });
+//     }
+// });
+// document.addEventListener("click", (e) => {
+//   // Settings icon click
+//   if (e.target.classList.contains("fa-gear") || e.target.closest(".fa-gear")) {
+//     const item = e.target.closest(".transaction-item");
+//     if (!item) return;
+
+//     const name = item.querySelector(".name").textContent;
+//     let customers = JSON.parse(localStorage.getItem("customers")) || [];
+//     let customer = customers.find(cust => cust.name.toUpperCase() === name);
+//     if (!customer) return;
+
+//     const editAside = document.getElementById("edit-customer-aside");
+//     editAside.innerHTML = 
+//     `<div class="right-container-head"> <h2>Customer Info</h2> <span id='edit-xmark'><i class="fa-solid fa-xmark"></i></span></div>
+//     <div class="line"></div>
+
+//   <div class="transaction-item">
+//   <div class="profile-avatar">
+//     <span>A</span>
+//   </div>
+//   <div class="user-info">
+//     <div class="name">${customer.name}</div>
+//     <div class="number">${customer.number}</div>
+//   </div>
+//   <div class="transaction-amount">
+//     <div class="amount">₹ ${customer.price}</div>
+//     <div class="youll-get">Pending</div>
+//   </div>
+// </div>
+
+// <div class="edit-profile"><button id="edit-profile-btn"><i class="fa-regular fa-pen-to-square"></i> Edit Profile</button></div>
+// <div class="bottom-nav-right">
+// <button id="delete-customer-btn-final"><i class="fa-solid fa-trash-can"></i>Delete Customer</button>
+// </div>`
+//   editAside.style.display = 'block'
+
+//     // Populate info first
+//     const editProfileBtn = document.querySelector("#edit-profile-btn");
+//     editProfileBtn.onclick = () => {
+//       // Replace innerHTML only now
+//       editAside.innerHTML = `
+//         <div class="right-container-head">
+//           <h2>Edit Customer</h2>
+//           <span id="close-edit"><i class="fa-solid fa-xmark"></i></span>
+//         </div>
+//         <div class="line"></div>
+//         <label class='edit-label'>Name</label><br>
+//         <input type="text" id="edit-customer-name" value="${customer.name}"><br>
+//         <label class='edit-label'>Number</label><br>
+//         <input type="text" id="edit-customer-number" value="${customer.number || ''}">
+//         <div class="bottom-nav-right">
+//           <button id="update-customer-btn">Update</button>
+//         </div>
+//       `;
+
+//       // Close button
+//       document.getElementById('edit-xmark').addEventListener('click', ()=>{
+//         editAside.style.display = "none";
+
+//       })
+//       editAside.querySelector("#close-edit").addEventListener("click", () => {
+        
+//         editAside.innerHTML = 
+//         `<div class="right-container-head"> <h2>Customer Info</h2> <span id='edit-xmark'><i class="fa-solid fa-xmark"></i></span></div>
+//     <div class="line"></div>
+
+//   <div class="transaction-item">
+//   <div class="profile-avatar">
+//     <span>A</span>
+//   </div>
+//   <div class="user-info">
+//     <div class="name">${customer.name}</div>
+//     <div class="number">${customer.number}</div>
+//   </div>
+//   <div class="transaction-amount">
+//     <div class="amount">₹ ${customer.price}</div>
+//     <div class="youll-get">Pending</div>
+//   </div>
+// </div>
+
+// <div class="edit-profile"><button id="edit-profile-btn"><i class="fa-regular fa-pen-to-square"></i> Edit Profile</button></div>
+// <div class="bottom-nav-right">
+// <button id="delete-customer-btn-final"><i class="fa-solid fa-trash-can"></i>Delete Customer</button>
+// </div>`
+//       });
+
+//       // Update button logic
+//       editAside.querySelector("#update-customer-btn").addEventListener("click", () => {
+//         const newName = document.getElementById("edit-customer-name").value.trim();
+//         const newNumber = document.getElementById("edit-customer-number").value.trim();
+
+//         if (!newName) {
+//           alert("Name cannot be empty");
+//           return;
+//         }
+
+//         // Update customer object
+//         customer.name = newName;
+//         customer.number = newNumber;
+//         localStorage.setItem("customers", JSON.stringify(customers));
+
+//         // Update main UI list
+//         const allItems = document.querySelectorAll(".transaction-item");
+//         allItems.forEach(itm => {
+//           const nm = itm.querySelector(".name").textContent;
+//           if (nm === name) {
+//             itm.querySelector(".name").textContent = newName.toUpperCase();
+//             itm.querySelector(".number").textContent = newNumber;
+//           }
+//         });
+
+//         // Update detail section if open
+//         const detailNameEl = document.querySelector("#transaction-item-detail .name");
+//         const detailNumberEl = document.querySelector("#transaction-item-detail .number");
+//         if (detailNameEl) detailNameEl.textContent = newName.toUpperCase();
+//         if (detailNumberEl) detailNumberEl.textContent = newNumber;
+
+//         alert("Customer updated successfully!");
+//         editAside.style.display = "none";
+//       });
+//     };
+//   }
+// });
+
+
+const editAside = document.getElementById("edit-customer-aside");
+
+document.addEventListener("click", (e) => {
+  // Open edit customer info
+  if (e.target.classList.contains("fa-gear") || e.target.closest(".fa-gear")) {
+    const item = e.target.closest(".transaction-item");
+    if (!item) return;
+
+    const name = item.querySelector(".name").textContent;
+    let customers = JSON.parse(localStorage.getItem("customers")) || [];
+    let customer = customers.find(cust => cust.name.toUpperCase() === name);
+    if (!customer) return;
+
+    function showCustomerInfo() {
+      editAside.innerHTML = `
+        <div class="right-container-head">
+          <h2>Customer Info</h2>
+          <span id="edit-xmark"><i class="fa-solid fa-xmark"></i></span>
+        </div>
+        <div class="line"></div>
+        <div class="transaction-item">
+          <div class="profile-avatar"><span>A</span></div>
+          <div class="user-info">
+            <div class="name">${customer.name.toUpperCase()}</div>
+            <div class="number">${customer.number}</div>
+          </div>
+          <div class="transaction-amount">
+            <div class="amount">₹ ${customer.price}</div>
+            <div class="youll-get">Pending</div>
+          </div>
+        </div>
+        <div class="edit-profile">
+          <button id="edit-profile-btn"><i class="fa-regular fa-pen-to-square"></i> Edit Profile</button>
+        </div>
+        <div class="bottom-nav-right">
+          <button id="delete-customer-btn-final"><i class="fa-solid fa-trash-can"></i>Delete Customer</button>
+        </div>
+      `;
+      editAside.style.display = 'block';
+    }
+
+    showCustomerInfo();
+
+    // Event delegation for X mark and Edit button
+    editAside.onclick = (ev) => {
+      if (ev.target.id === "edit-xmark" || ev.target.closest("#edit-xmark")) {
+        editAside.style.display = "none";
+      }
+
+      if (ev.target.id === "edit-profile-btn" || ev.target.closest("#edit-profile-btn")) {
+        editAside.innerHTML = `
+          <div class="right-container-head">
+            <h2>Edit Customer</h2>
+            <span id="close-edit"><i class="fa-solid fa-xmark"></i></span>
+          </div>
+          <div class="line"></div>
+          <label class='edit-label'>Name</label><br>
+          <input type="text" id="edit-customer-name" value="${customer.name.toUpperCase()}"><br>
+          <label class='edit-label'>Number</label><br>
+          <input type="text" id="edit-customer-number" value="${customer.number || ''}">
+          <div class="bottom-nav-right">
+            <button id="update-customer-btn">Update</button>
+          </div>
+        `;
+
+        // Update button
+        document.getElementById("update-customer-btn").onclick = () => {
+          const newName = document.getElementById("edit-customer-name").value.trim();
+          const newNumber = document.getElementById("edit-customer-number").value.trim();
+
+          if (!newName) { alert("Name cannot be empty"); return; }
+
+          customer.name = newName;
+          customer.number = newNumber;
+          localStorage.setItem("customers", JSON.stringify(customers));
+
+          // Update main list
+          document.querySelectorAll(".transaction-item").forEach(itm => {
+            if (itm.querySelector(".name").textContent === name) {
+              itm.querySelector(".name").textContent = newName.toUpperCase();
+              itm.querySelector(".number").textContent = newNumber;
+            }
+          });
+
+          // Update detail section if open
+          const detailNameEl = document.querySelector("#transaction-item-detail .name");
+          const detailNumberEl = document.querySelector("#transaction-item-detail .number");
+          if (detailNameEl) detailNameEl.textContent = newName.toUpperCase();
+          if (detailNumberEl) detailNumberEl.textContent = newNumber;
+
+          alert("Customer updated successfully!");
+          showCustomerInfo(); // Go back to info view
+        };
+
+        // Close button inside edit
+        document.getElementById("close-edit").onclick = showCustomerInfo;
+      }
+    };
+  }
+});
+
+
+// Get elements
+const addAmountBtn = document.getElementById("add-amount-paid-btn");
+const amountPayArea = document.getElementById("amount-pay-area");
+
+// Open amount pay area
+document.addEventListener("click", (e) => {
+  if (e.target.id === "add-amount-paid-btn" || e.target.closest("#add-amount-paid-btn")) {
+    if (amountPayArea) {
+      amountPayArea.style.display = "inherit"; // show the section
+    }
+  }
+
+  // Close amount pay area when X mark clicked
+  if (e.target.id === "close-amount-pay" || e.target.closest("#close-amount-pay")) {
+    if (amountPayArea) {
+      amountPayArea.style.display = "none"; // hide the section
+    }
+  }
+});
+
+
+
+  </script>
+
+  <script>
+
+    const addCustomerBtn = document.getElementById("add-customer-btn");
+const addCustomerAside = document.getElementById("add-customer-aside");
+const closeBtn = addCustomerAside.querySelector(".fa-xmark");
+const customersList = document.getElementById("customers-list");
+const customerCountEl = document.getElementById("customer-count");
+const customerDetailRight = document.getElementById("customer-detail-right");
+const customerNameInput = document.getElementById("customer-name");
+const customerNumberInput = document.getElementById("customer-number");
+const editAside = document.getElementById("edit-customer-aside");
+const amountPayArea = document.getElementById("amount-pay-area");
+const leftCustomerArea = document.getElementById('left-container');
+const noCustomerSelected = document.getElementById('no-customer-selected');
+
+// ** New Function to Update all UI elements **
+function updateCustomerUI(customer) {
+    // Recalculate based on current customer object
+    const totalPaid = (customer.payments && Array.isArray(customer.payments))
+        ? customer.payments.reduce((sum, p) => sum + parseFloat(p.amount), 0)
+        : 0;
+
+    // Update main customer list amount
+    document.querySelectorAll(".transaction-item").forEach(itm => {
+        const nm = itm.querySelector(".name")?.textContent;
+        if (nm === customer.name.toUpperCase()) {
+            const amountDiv = itm.querySelector(".amount");
+            // Check if amountDiv exists before trying to access it
+            if (amountDiv) {
+                amountDiv.textContent = `₹${customer.price}`;
+            }
+        }
+    });
+
+    // Update detail section
+    const detailDiv = document.getElementById("transaction-item-detail");
+    if (detailDiv) {
+        const detailAmountDiv = detailDiv.querySelector(".amount");
+        // Check if the amount div inside the detail section exists
+        if (detailAmountDiv) {
+            detailAmountDiv.textContent = `₹${customer.price} `;
+        }
+    }
+
+    const pendingEl = document.getElementById("amount-pending-each");
+    if (pendingEl) pendingEl.textContent = `₹${customer.price}`;
+
+    const paidEl = document.getElementById("amount-paid-each");
+    if (paidEl) paidEl.textContent = `₹${totalPaid}`;
+
+    // Update payment history table in the aside
+    showCustomerHistory(customer);
+}
+
+
+function showCustomerHistory(customer) {
+    // Calculate total paid
+    let totalPaid = 0;
+    if (customer.payments && Array.isArray(customer.payments)) {
+        totalPaid = customer.payments.reduce((sum, p) => sum + parseFloat(p.amount), 0);
+    }
+
+    let paymentHistoryHtml = '';
+    if (customer.payments && customer.payments.length > 0) {
+        paymentHistoryHtml = `
+            <h3 class = 'payment-history'>Payment History <span>(amount Recived)</span></h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${customer.payments.map(p => `
+                        <tr>
+                            <td>₹${p.amount}</td>
+                            <td>${p.date}</td>
+                            <td>${p.description}</td>
+                            <td><button class = 'row-edit' id = 'row-edit-paid'>Edit</button><button class = 'row-delete' id = 'row-delete-paid'>delete</button></td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        `;
+    } else {
+        paymentHistoryHtml = `<h3 class = 'payment-history'>Payment History</h3><p>No payments recorded.</p>`;
+    }
+
+    editAside.innerHTML = `
+        <div class="right-container-head">
+            <h2>Customer Info</h2>
+            <span id="edit-xmark"><i class="fa-solid fa-xmark"></i></span>
+        </div>
+        <div class="line"></div>
+        <div class="transaction-item">
+            <div class="profile-avatar"><span>${customer.name.charAt(0).toUpperCase()}</span></div>
+            <div class="user-info">
+                <div class="name">${customer.name.toUpperCase()}</div>
+                <div class="number">${customer.number}</div>
+            </div>
+            <div class="transaction-amount">
+                <div class="amount">₹${customer.price}</div>
+                <div class="youll-get">Pending</div>
+            </div>
+        </div>
+        <div class="edit-profile">
+            <button id="edit-profile-btn"><i class="fa-regular fa-pen-to-square"></i> Edit Profile</button>
+        </div>
+        <div class = 'paid-history'>${paymentHistoryHtml}</div>
+        <div class="bottom-nav-right">
+            <button id="delete-customer-btn-final"><i class="fa-solid fa-trash-can"></i>Delete Customer</button>
+        </div>
+    `;
+    editAside.style.display = 'block';
+    customerDetailRight.style.display = 'none';
+}
+
+
+// 🔹 Update count helper
+function updateCustomerCount() {
+    let customers = JSON.parse(localStorage.getItem("customers")) || [];
+    customerCountEl.textContent = customers.length;
+}
+
+// Open form
+addCustomerBtn.addEventListener("click", () => {
+    addCustomerAside.style.display = "inherit";
+    addCustomerBtn.style.visibility = "hidden";
+    customerDetailRight.style.display = "none";
+    document.querySelector('.customer-info').style.display = 'none';
+    document.getElementById('edit-customer-aside').style.display = 'none';
+    document.getElementById('amount-pay-area').style.display = 'none';
+
+    //________________________________________________________________________________________________________________________________________
+    if (window.innerWidth > 700) {
+        document.getElementById("no-customer-selected").style.display = 'none';
+    } else {
+        document.getElementById("no-customer-selected").style.display = 'none';
+    }
+//________________________________________________________________________________________________________________________________________
+
+});
+
+// Close form
+// closeBtn.addEventListener("click", () => {
+//     // if (window.innerWidth <= 700) {
+//     // // Reload the page
+//     // location.reload();
+//     // }
+//     addCustomerAside.style.display = "none";
+//     addCustomerBtn.style.visibility = "visible";
+//     customerDetailRight.style.display = "block";
+
+//     document.getElementById("customer-name").value = ''
+//     document.getElementById("customer-number").value = ''
+//     document.getElementById("product-name").value =''
+//     document.getElementById("product-qty").value =''
+//     document.getElementById("price").value=''
+//     document.getElementById("date").value = ''
+// });
+
+// Close form
+closeBtn.addEventListener("click", () => {
+    // Hide the aside form and show the main buttons
+    addCustomerAside.style.display = "none";
+    addCustomerBtn.style.visibility = "visible";
+    
+    // Check screen size to decide which containers to show
+    if (window.innerWidth <= 700) {
+        // On small screens, hide the right-side detail view
+        // and show the main left-side customer list.
+        customerDetailRight.style.display = 'none';
+        leftCustomerArea.style.display = 'block'; // This is the key change
+    } else {
+        // On larger screens, show both the left list and the right detail view
+        customerDetailRight.style.display = 'block';
+    }
+
+    // Reset form fields
+    document.getElementById("customer-name").value = '';
+    document.getElementById("customer-number").value = '';
+    document.getElementById("product-name").value = '';
+    document.getElementById("product-qty").value = '';
+    document.getElementById("price").value = '';
+    document.getElementById("date").value = '';
+});
+
+// Add customer final button
+document.getElementById("add-customer-btn-final").addEventListener("click", function () {
+    let name = document.getElementById("customer-name").value.trim();
+    let number = document.getElementById("customer-number")?.value.trim() || "";
+    let product = document.getElementById("product-name")?.value.trim() || "";
+    let qty = document.getElementById("product-qty")?.value.trim() || "";
+    let price = document.getElementById("price").value.trim();
+    let date = document.getElementById("date")?.value.trim() || "";
+
+    if (name === "" || price === "") {
+        alert("Please fill all * required fields");
+        return;
+    }
+    document.querySelector('.customer-info').style.display = 'none';
+    
+
+    let customers = [];
+    try {
+        customers = JSON.parse(localStorage.getItem("customers")) || [];
+        if (!Array.isArray(customers)) customers = [];
+    } catch (e) {
+        customers = [];
+    }
+
+    // ---- Check by NAME ----
+    let existingCustomer = customers.find(
+        (cust) => cust.name.toLowerCase() === name.toLowerCase()
+    );
+
+    if (existingCustomer) {
+    // ✅ Number update logic
+    if ((!existingCustomer.number || existingCustomer.number === "") && number) {
+        existingCustomer.number = number;
+    }
+
+    // Append new record
+    if (!existingCustomer.records) existingCustomer.records = [];
+
+    existingCustomer.records.push({
+        product: product || "-",
+        qty: qty || "-",
+        price: price || "0",
+        date: date || "-"
+    });
+
+    // Update total price
+    let oldPrice = parseFloat(existingCustomer.price) || 0;
+    let newPrice = parseFloat(price) || 0;
+    existingCustomer.price = (oldPrice + newPrice).toString();
+
+    // Save update
+    localStorage.setItem("customers", JSON.stringify(customers));
+    
+    // Select all transaction items
+    const items = document.querySelectorAll(".transaction-item");
+
+    items.forEach((itm) => {
+        // Find the matching customer by name
+        const nm = itm.querySelector(".name").textContent;
+        if (nm === existingCustomer.name.toUpperCase()) {
+            // Find the elements to update and check if they exist
+            const amountDiv = itm.querySelector(".amount");
+            const numberDiv = itm.querySelector(".number");
+
+            if (amountDiv) {
+                amountDiv.textContent = `₹${existingCustomer.price}`;
+            }
+            if (numberDiv) {
+                numberDiv.textContent = existingCustomer.number || "";
+            }
+        }
+    });
+
+    alert("Existing customer updated with new product");
+
+    resetForm();
+    addCustomerAside.style.display = "none";
+    addCustomerBtn.style.visibility = "visible";
+    updateCustomerCount();
+    return;
+}
+
+    // ---- New customer ----
+    let customer = {
+        id: Date.now(),
+        name: name,
+        number: number || "",
+        price: price,
+        status: "Pending",
+        records: [
+            {
+                product: product || "-",
+                qty: qty || "-",
+                price: price || "0",
+                date: date || "-"
+            }
+        ]
+    };
+
+    customers.push(customer);
+    localStorage.setItem("customers", JSON.stringify(customers));
+
+    let container = document.createElement("div");
+    container.classList.add("transaction-item");
+    container.innerHTML = `
+        <div class="profile-avatar">
+            <span>${name.charAt(0).toUpperCase()}</span>
+        </div>
+        <div class="user-info">
+            <div class="name">${name.toUpperCase()}</div>
+            <div class="number">${number ? number : ""}</div>
+        </div>
+        <div class="transaction-amount">
+            <div class="amount">₹${price}</div>
+            <div class="youll-get">${customer.status}</div>
+        </div>
+    `;
+    customersList.appendChild(container);
+
+    resetForm();
+    addCustomerAside.style.display = "none";
+    addCustomerBtn.style.visibility = "visible";
+    updateCustomerCount();
+});
+
+// ---- Reset input form ----
+function resetForm() {
+    document.getElementById("customer-name").value = "";
+    if (document.getElementById("customer-number"))
+        document.getElementById("customer-number").value = "";
+    if (document.getElementById("product-name"))
+        document.getElementById("product-name").value = "";
+    if (document.getElementById("product-qty"))
+        document.getElementById("product-qty").value = "";
+    document.getElementById("price").value = "";
+    if (document.getElementById("date"))
+        document.getElementById("date").value = "";
+}
+
+// ---- On page load ----
+window.addEventListener("DOMContentLoaded", () => {
+    let customers = [];
+    try {
+        customers = JSON.parse(localStorage.getItem("customers")) || [];
+        if (!Array.isArray(customers)) customers = [];
+    } catch (e) {
+        customers = [];
+    }
+
+    customers.forEach((customer) => {
+        let container = document.createElement("div");
+        container.classList.add("transaction-item");
+        container.innerHTML = `
+            <div class="profile-avatar">
+                <span>${customer.name.charAt(0).toUpperCase()}</span>
+            </div>
+            <div class="user-info">
+                <div class="name">${customer.name.toUpperCase()}</div>
+                <div class="number">${customer.number ? customer.number : ""}</div>
+            </div>
+            <div class="transaction-amount">
+                <div class="amount">₹${customer.price}</div>
+                <div class="youll-get">${customer.status}</div>
+            </div>
+        `;
+        customersList.appendChild(container);
+    });
+
+    // Add new 
+
+    updateCustomerCount();
+    if (window.innerWidth > 700) {
+        document.getElementById("no-customer-selected").style.display = 'block';
+    } else {
+        document.getElementById("no-customer-selected").style.display = 'none';
+    }
+    // _____________________________________________________________________________
+});
+
+const customersLists = document.getElementById("customers-list");
+const customerInfoSection = document.querySelector(".customer-info");
+
+// Transaction item click → detail view
+customersLists.addEventListener("click", (e) => {
+    const item = e.target.closest(".transaction-item");
+    if (!item) return;
+
+    //________________________________________________________________________________________________________________________________________
+    if (window.innerWidth > 700) {
+        document.getElementById("no-customer-selected").style.display = 'none';
+    } else {
+        document.getElementById("no-customer-selected").style.display = 'none';
+    }
+//________________________________________________________________________________________________________________________________________
+
+
+    const name = item.querySelector(".name").textContent;
+    let customers = JSON.parse(localStorage.getItem("customers")) || [];
+    let customer = customers.find(
+        (cust) => cust.name.toUpperCase() === name
+    );
+    if (!customer) return;
+
+    customerInfoSection.innerHTML = "";
+
+    // Profile
+    const profileDiv = document.createElement("div");
+    profileDiv.classList.add("transaction-item");
+    profileDiv.id = "transaction-item-detail";
+    profileDiv.innerHTML = `
+        <div class="profile-avatar">
+            <span>${customer.name.charAt(0).toUpperCase()}</span>
+        </div>
+        <div class="user-info">
+            <div class="name">${customer.name.toUpperCase()}</div>
+            <div class="number">${customer.number || ""}</div>
+        </div>
+        <div class="transaction-amount" id="transaction-amount-detail">
+            <div> <span><i class="fa-solid fa-gear"></i><button id='backBtn'>Back</button></span></div>
+        </div>
+    `;
+
+    // Amount details
+    const amountDiv = document.createElement("div");
+    amountDiv.classList.add("amount-details");
+    const totalPaid = (customer.payments && Array.isArray(customer.payments))
+        ? customer.payments.reduce((sum, p) => sum + parseFloat(p.amount), 0)
+        : 0;
+    amountDiv.innerHTML = `
+        <div class="amount-paid">Amount Recived: <span id="amount-paid-each">₹${totalPaid}</span></div>
+        <div class="amount-pending">Total Pending: <span id="amount-pending-each">₹${customer.price}</span></div>
+    `;
+
+    //History div
+    const historyHeading = document.createElement('div');
+    historyHeading.classList.add('history-link');
+    historyHeading.innerHTML =`<div class="transaction-amount" id="transaction-amount-detail">
+            <div> <span class="fa-gear">History<i class="fa-solid fa-arrow-up-right-from-square"></i></span></div>
+        </div>`
+
+    // Records Table
+    const table = document.createElement("table");
+    table.id = "recordsTable";
+    table.innerHTML = `
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    `;
+    const tbody = table.querySelector("tbody");
+
+    if (customer.records && Array.isArray(customer.records)) {
+        customer.records.forEach((rec) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${rec.product}</td>
+                <td>${rec.qty}</td>
+                <td>₹${rec.price}</td>
+                <td>${rec.date}</td>
+                <td><button class = 'row-edit' id = 'row-edit-pending'>Edit</button><button class = 'row-delete' id = 'row-delete-pending'>delete</button></td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    const bottomNav = document.createElement("div");
+    bottomNav.classList.add("bottom-customer-nav-right");
+    bottomNav.innerHTML = `
+        <button id="add-amount-paid-btn"><i class="fa-solid fa-plus"></i> Add Amount Recived</button>
+        <button id="add-new-product-btn"><i class="fa-solid fa-plus"></i> Add New Product</button>
+    `;
+
+    customerInfoSection.appendChild(profileDiv);
+    customerInfoSection.appendChild(amountDiv);
+    customerInfoSection.appendChild(historyHeading);
+    customerInfoSection.appendChild(table);
+    customerInfoSection.appendChild(bottomNav);
+
+    customerInfoSection.style.display = "block";    
+    document.getElementById('edit-customer-aside').style.display = 'none';
+    document.getElementById('amount-pay-area').style.display = 'none';
+    addAmountBtn.style.display= 'none';
+});
+
+// ---- Add New Product button → open aside form ----
+document.addEventListener("click", (e) => {
+    if (e.target.id === "add-new-product-btn" || e.target.closest("#add-new-product-btn")) {
+        // Form open
+        addCustomerAside.style.display = "inherit";
+        addCustomerBtn.style.visibility = "hidden";
+        customerDetailRight.style.display = "none";
+        addCustomerBtn.style.visibility = 'hidden';
+
+        // Input fields
+        const customerNameInput = document.getElementById("customer-name");
+        const customerNumberInput = document.getElementById("customer-number");
+
+        // Current displayed customer
+        const currentCustomerDiv = document.getElementById("transaction-item-detail");
+        if (currentCustomerDiv) {
+            const name = currentCustomerDiv.querySelector(".name").innerText;
+            const number = currentCustomerDiv.querySelector(".number").innerText;
+
+            // Set input values
+            customerNameInput.value = name;
+            customerNumberInput.value = number || "";
+            console.log("Add New Product -> Name:", name, "Number:", number);
+  //________________________________________________________________________________________________________________________________________
+    if (window.innerWidth > 700) {
+        document.getElementById("no-customer-selected").style.display = 'none';
+    } else {
+        document.getElementById("no-customer-selected").style.display = 'none';
+    }
+//________________________________________________________________________________________________________________________________________
+
+        }
+    }
+});
+
+document.addEventListener("click", (e) => {
+    // Open edit customer info
+    if (e.target.classList.contains("fa-gear") || e.target.closest(".fa-gear")) {
+        const item = e.target.closest(".transaction-item");
+        if (!item) return;
+
+        const name = item.querySelector(".name").textContent;
+        let customers = JSON.parse(localStorage.getItem("customers")) || [];
+        let customer = customers.find(cust => cust.name.toUpperCase() === name);
+        if (!customer) return;
+
+        showCustomerHistory(customer);
+
+        // Event delegation for X mark and Edit button
+        editAside.onclick = (ev) => {
+            if (ev.target.id === "edit-xmark" || ev.target.closest("#edit-xmark")) {
+                editAside.style.display = "none";
+            }
+
+            if (ev.target.id === "edit-profile-btn" || ev.target.closest("#edit-profile-btn")) {
+                editAside.innerHTML = `
+                    <div class="right-container-head">
+                        <h2>Edit Customer</h2>
+                        <span id="close-edit"><i class="fa-solid fa-xmark"></i></span>
+                    </div>
+                    <div class="line"></div>
+                    <label class='edit-label'>Name</label><br>
+                    <input type="text" id="edit-customer-name" value="${customer.name.toUpperCase()}"><br>
+                    <label class='edit-label'>Number</label><br>
+                    <input type="text" id="edit-customer-number" value="${customer.number || ''}">
+                    <div class="bottom-nav-right">
+                        <button id="update-customer-btn">Update Details</button>
+                    </div>
+                `;
+
+                // Update button
+                document.getElementById("update-customer-btn").onclick = () => {
+                    const newName = document.getElementById("edit-customer-name").value.trim();
+                    const newNumber = document.getElementById("edit-customer-number").value.trim();
+
+                    if (!newName) { alert("Name cannot be empty"); return; }
+
+                    customer.name = newName;
+                    customer.number = newNumber;
+                    localStorage.setItem("customers", JSON.stringify(customers));
+
+                    // Update all UI elements
+                    updateCustomerUI(customer);
+
+                    alert("Customer updated successfully!");
+                    showCustomerHistory(customer); // Go back to info view
+                };
+
+                // Close button inside edit
+                document.getElementById("close-edit").onclick = () => showCustomerHistory(customer);
+            }
+        };
+    }
+});
+
+
+// Get elements
+const addAmountBtn = document.getElementById("add-amount-paid-btn");
+// const amountPayArea = document.getElementById("amount-pay-area");
+
+// Open amount pay area
+document.addEventListener("click", (e) => {
+    if (e.target.id === "add-amount-paid-btn" || e.target.closest("#add-amount-paid-btn")) {
+        if (amountPayArea) {
+            amountPayArea.style.display = "inherit"; // show the section
+        }
+    }
+
+    // Close amount pay area when X mark clicked
+    if (e.target.id === "close-amount-pay" || e.target.closest("#close-amount-pay")) {
+        if (amountPayArea) {
+            amountPayArea.style.display = "none"; // hide the section
+        }
+    }
+});
+
+// Update Payment button click
+document.addEventListener("click", (e) => {
+    if (e.target.id === "update-payment-btn") {
+        try {
+            const amountInput = amountPayArea.querySelector("input[type='text']");
+            const descInput = document.getElementById("amount-paid-description");
+            const dateInput = amountPayArea.querySelector("input[type='date']");
+
+            let amount = parseFloat(amountInput.value.trim()) || 0;
+            let description = descInput.value.trim() || "-";
+            let date = dateInput.value.trim() || "-";
+
+            if (!amount || amount <= 0) {
+                alert("Please enter a valid amount");
+                return;
+            }
+
+            // Find current customer
+            const detailDiv = document.getElementById("transaction-item-detail");
+            if (!detailDiv) {
+                alert("No customer selected!");
+                return;
+            }
+            const customerName = detailDiv.querySelector(".name").textContent;
+
+            let customers = JSON.parse(localStorage.getItem("customers")) || [];
+            let customer = customers.find(cust => cust.name.toUpperCase() === customerName);
+
+            if (!customer) {
+                alert("Customer not found!");
+                return;
+            }
+
+            // Add payment history array if not exists
+            if (!customer.payments) customer.payments = [];
+
+            // Save new payment (number type amount)
+            customer.payments.push({
+                amount: parseFloat(amount),
+                date: date,
+                description: description
+            });
+
+            // Reduce pending amount (convert string → number)
+            let currentPending = parseFloat(customer.price) || 0;
+            let newPending = currentPending - amount;
+            if (newPending < 0) newPending = 0;
+            customer.price = newPending;
+
+            // Save in localStorage
+            localStorage.setItem("customers", JSON.stringify(customers));
+
+            // Call the new centralized function to update all UI elements
+            updateCustomerUI(customer);
+
+            alert("Payment updated successfully!");
+
+            // Reset and close amount pay area
+            amountInput.value = "";
+            descInput.value = "";
+            dateInput.value = "";
+            amountPayArea.style.display = "none";
+
+        } catch (error) {
+            console.error(error);
+            alert("An error occurred: " + error.message);
+        }
+    }
+});
+
+
+// ** One event listener is enough **
+customerInfoSection.addEventListener("click", (e) => {
+    if (e.target.classList.contains("fa-gear") || e.target.closest(".fa-gear")) {
+        const customerDetailItem = customerInfoSection.querySelector("#transaction-item-detail");
+        if (!customerDetailItem) return;
+
+        const name = customerDetailItem.querySelector(".name").textContent;
+        let customers = JSON.parse(localStorage.getItem("customers")) || [];
+        let customer = customers.find(cust => cust.name.toUpperCase() === name);
+        if (!customer) return;
+
+        showCustomerHistory(customer);
+    }
+});
+
+// Event listener for the "xmark" icon to close the edit/history aside
+editAside.addEventListener("click", (e) => {
+    if (e.target.id === "edit-xmark" || e.target.closest("#edit-xmark")) {
+        editAside.style.display = "none";
+        customerDetailRight.style.display = 'block'; // Show the main detail section again
+    }
+});
+
+// Add this new event listener
+customerInfoSection.addEventListener("click", (e) => {
+    // Check if the clicked element is the 'backBtn' or its child
+    if (e.target.id === 'backBtn' || e.target.closest('#backBtn')) {
+        // Find the customer detail section and hide it
+        const customerDetailRight = document.getElementById("customer-detail-right");
+        if (customerDetailRight) {
+            customerDetailRight.style.display = 'none';
+//________________________________________________________________________________________________________________________________________
+    if (window.innerWidth > 700) {
+        document.getElementById("no-customer-selected").style.display = 'block';
+    } else {
+        document.getElementById("no-customer-selected").style.display = 'none';
+    }
+//________________________________________________________________________________________________________________________________________
+
+        }
+
+        // On small screens, show the left customer list again
+        if (window.innerWidth <= 700) {
+            leftCustomerArea.style.display = 'block';
+        }
+    }
+});
+
+
+// ---- Row Edit/Delete Handler for Records Table ----
+document.addEventListener("click", function (e) {
+
+    // ---- Edit Button ----
+    if (e.target && e.target.id === "row-edit-pending") {
+        const row = e.target.closest("tr");
+        const cells = row.querySelectorAll("td");
+
+        // backup values
+        const product = cells[0].innerText;
+        const qty = cells[1].innerText;
+        const price = cells[2].innerText.replace("₹", "");
+        const date = cells[3].innerText;
+
+        // convert to input fields
+        cells[0].innerHTML = `<input type="text" value="${product}">`;
+        cells[1].innerHTML = `<input type="number" value="${qty}">`;
+        cells[2].innerHTML = `<input type="number" value="${price}">`;
+        cells[3].innerHTML = `<input type="date" value="${date}">`;
+        cells[4].innerHTML = `
+            <button class="save-row">Save</button>
+            <button class="cancel-row">Cancel</button>
+        `;
+
+        row.classList.add("editing");
+    }
+
+    // ---- Save Button ----
+    if (e.target && e.target.classList.contains("save-row")) {
+        const row = e.target.closest("tr");
+        const inputs = row.querySelectorAll("input");
+
+        const newProduct = inputs[0].value;
+        const newQty = inputs[1].value;
+        const newPrice = parseFloat(inputs[2].value) || 0;
+        const newDate = inputs[3].value;
+
+        const currentCustomerName = document.querySelector("#transaction-item-detail .name").innerText;
+        let customers = JSON.parse(localStorage.getItem("customers")) || [];
+        let customer = customers.find(c => c.name.toUpperCase() === currentCustomerName);
+
+        if (customer) {
+            let rowIndex = Array.from(row.parentNode.children).indexOf(row);
+            if (customer.records && customer.records[rowIndex]) {
+                // old amount
+                let oldPrice = parseFloat(customer.records[rowIndex].price) || 0;
+
+                // update record
+                customer.records[rowIndex] = {
+                    product: newProduct,
+                    qty: newQty,
+                    price: newPrice,
+                    date: newDate
+                };
+
+                // adjust pending price (remove old + add new)
+                let currentPending = parseFloat(customer.price) || 0;
+                customer.price = (currentPending - oldPrice + newPrice).toString();
+
+                // save back
+                localStorage.setItem("customers", JSON.stringify(customers));
+
+                // update UI row
+                row.innerHTML = `
+                    <td>${newProduct}</td>
+                    <td>${newQty}</td>
+                    <td>₹${newPrice}</td>
+                    <td>${newDate}</td>
+                    <td>
+                        <button class="row-edit" id="row-edit-pending">Edit</button>
+                        <button class="row-delete" id="row-delete-pending">Delete</button>
+                    </td>
+                `;
+
+                // refresh amounts everywhere
+                updateCustomerUI(customer);
+               document.getElementById('edit-customer-aside').style.display ='none'; 
+                document.querySelector('.customer-info').style.display = 'block'
+            }
+        }
+    }
+
+    // ---- Cancel Button ----
+    if (e.target && e.target.classList.contains("cancel-row")) {
+        const row = e.target.closest("tr");
+        const rowIndex = Array.from(row.parentNode.children).indexOf(row);
+
+        const currentCustomerName = document.querySelector("#transaction-item-detail .name").innerText;
+        let customers = JSON.parse(localStorage.getItem("customers")) || [];
+        let customer = customers.find(c => c.name.toUpperCase() === currentCustomerName);
+
+        if (customer && customer.records && customer.records[rowIndex]) {
+            const rec = customer.records[rowIndex];
+            row.innerHTML = `
+                <td>${rec.product}</td>
+                <td>${rec.qty}</td>
+                <td>₹${rec.price}</td>
+                <td>${rec.date}</td>
+                <td>
+                    <button class="row-edit" id="row-edit-pending">Edit</button>
+                    <button class="row-delete" id="row-delete-pending">Delete</button>
+                </td>
+            `;
+        }
+    }
+
+    // ---- Delete Button ----
+    if (e.target && e.target.id === "row-delete-pending") {
+        const row = e.target.closest("tr");
+        const rowIndex = Array.from(row.parentNode.children).indexOf(row);
+
+        const currentCustomerName = document.querySelector("#transaction-item-detail .name").innerText;
+        let customers = JSON.parse(localStorage.getItem("customers")) || [];
+        let customer = customers.find(c => c.name.toUpperCase() === currentCustomerName);
+
+        if (customer && customer.records) {
+            let oldPrice = parseFloat(customer.records[rowIndex].price) || 0;
+
+            // remove record
+            customer.records.splice(rowIndex, 1);
+
+            // adjust pending price
+            let currentPending = parseFloat(customer.price) || 0;
+            customer.price = (currentPending - oldPrice).toString();
+            if (customer.price < 0) customer.price = "0";
+
+            localStorage.setItem("customers", JSON.stringify(customers));
+
+            // remove row from UI
+            row.remove();
+
+            // refresh amounts everywhere
+            updateCustomerUI(customer);
+             document.getElementById('edit-customer-aside').style.display ='none'; 
+            document.querySelector('.customer-info').style.display = 'block'
+        }
+    }
+});
+
+
+
+
+
+
+// Add this new event listener
+document.addEventListener("click", function (e) {
+    // Check if the clicked element is an "Edit" button for a paid record
+    if (e.target && e.target.id === "row-edit-paid") {
+        const row = e.target.closest("tr");
+        const cells = row.querySelectorAll("td");
+
+        // Get values from the table cells
+        const amount = cells[0].innerText.replace("₹", "");
+        const date = cells[1].innerText;
+        const descp = cells[2].innerText;
+
+        // Replace the cell content with input fields
+        cells[0].innerHTML = `<input type="number" value="${amount}">`;
+        cells[1].innerHTML = `<input type="date" value="${date}">`;
+        cells[2].innerHTML = `<input type="text" value="${descp}">`;
+        cells[3].innerHTML = `
+            <button class="save-row-paid">Save</button>
+            <button class="cancel-row-paid">Cancel</button>
+        `;
+    }
+
+    // Check if the clicked element is a "Save" button for a paid record
+    if (e.target && e.target.classList.contains("save-row-paid")) {
+        const row = e.target.closest("tr");
+        const inputs = row.querySelectorAll("input");
+
+        const newAmount = parseFloat(inputs[0].value) || 0;
+        const newDate = inputs[1].value;
+        const newDescp = inputs[2].value || '';
+
+        // Get the current customer from the UI
+        const currentCustomerName = document.querySelector("#transaction-item-detail .name")?.innerText;
+        if (!currentCustomerName) return;
+
+        let customers = JSON.parse(localStorage.getItem("customers")) || [];
+        let customer = customers.find(c => c.name.toUpperCase() === currentCustomerName);
+
+        if (customer) {
+            // Find the index of the row being edited
+            const historyTable = row.closest('table');
+            const payments = historyTable ? Array.from(historyTable.querySelectorAll('tbody tr')) : [];
+            const rowIndex = payments.indexOf(row);
+            
+            if (customer.payments && customer.payments[rowIndex]) {
+                const oldAmount = parseFloat(customer.payments[rowIndex].amount) || 0;
+                
+                // Update the payment record
+                customer.payments[rowIndex] = {
+                    amount: newAmount,
+                    date: newDate,
+                    description: newDescp
+                };
+
+                // Adjust the pending amount
+                let currentPending = parseFloat(customer.price) || 0;
+                customer.price = (currentPending + oldAmount - newAmount).toString();
+
+                localStorage.setItem("customers", JSON.stringify(customers));
+                updateCustomerUI(customer);
+            }
+        }
+    }
+
+    // Check if the clicked element is a "Cancel" button for a paid record
+    if (e.target && e.target.classList.contains("cancel-row-paid")) {
+        const row = e.target.closest("tr");
+        const rowIndex = Array.from(row.parentNode.children).indexOf(row);
+
+        const currentCustomerName = document.querySelector("#transaction-item-detail .name")?.innerText;
+        if (!currentCustomerName) return;
+
+        let customers = JSON.parse(localStorage.getItem("customers")) || [];
+        let customer = customers.find(c => c.name.toUpperCase() === currentCustomerName);
+
+        if (customer && customer.payments && customer.payments[rowIndex]) {
+            const rec = customer.payments[rowIndex];
+            row.innerHTML = `
+                <td>₹${rec.amount}</td>
+                <td>${rec.date}</td>
+                <td>${rec.description}</td>
+                <td>
+                    <button class="row-edit" id="row-edit-paid">Edit</button>
+                    <button class="row-delete" id="row-delete-paid">Delete</button>
+                </td>
+            `;
+        }
+    }
+
+    // Check if the clicked element is a "Delete" button for a paid record
+    if (e.target && e.target.id === "row-delete-paid") {
+        const row = e.target.closest("tr");
+        const rowIndex = Array.from(row.parentNode.children).indexOf(row);
+
+        const currentCustomerName = document.querySelector("#transaction-item-detail .name")?.innerText;
+        if (!currentCustomerName) return;
+
+        let customers = JSON.parse(localStorage.getItem("customers")) || [];
+        let customer = customers.find(c => c.name.toUpperCase() === currentCustomerName);
+
+        if (customer && customer.payments && customer.payments[rowIndex]) {
+            const oldAmount = parseFloat(customer.payments[rowIndex].amount) || 0;
+
+            // Remove the record from the payments array
+            customer.payments.splice(rowIndex, 1);
+
+            // Adjust the pending amount
+            let currentPending = parseFloat(customer.price) || 0;
+            customer.price = (currentPending + oldAmount).toString();
+
+            localStorage.setItem("customers", JSON.stringify(customers));
+
+            // Remove the row from the UI
+            row.remove();
+            updateCustomerUI(customer);
+        }
+    }
+});
+
+// Row Edit/Delete Handler for Pending Records Table
+document.addEventListener("click", function (e) {
+    if (e.target && e.target.id === "row-edit-pending") {
+        const row = e.target.closest("tr");
+        const cells = row.querySelectorAll("td");
+
+        // Get values from the table cells
+        const product = cells[0].innerText;
+        const qty = cells[1].innerText;
+        const price = cells[2].innerText.replace("₹", "");
+        const date = cells[3].innerText;
+
+        // Replace the cell content with input fields
+        cells[0].innerHTML = `<input type="text" value="${product}">`;
+        cells[1].innerHTML = `<input type="number" value="${qty}">`;
+        cells[2].innerHTML = `<input type="number" value="${price}">`;
+        cells[3].innerHTML = `<input type="date" value="${date}">`;
+        cells[4].innerHTML = `
+            <button class="save-row-pending">Save</button>
+            <button class="cancel-row-pending">Cancel</button>
+        `;
+    }
+
+    if (e.target && e.target.classList.contains("save-row-pending")) {
+        const row = e.target.closest("tr");
+        const inputs = row.querySelectorAll("input");
+
+        const newProduct = inputs[0].value || "-";
+        const newQty = inputs[1].value || "-";
+        const newPrice = parseFloat(inputs[2].value) || 0;
+        const newDate = inputs[3].value || "-";
+        
+        const currentCustomerName = document.querySelector("#transaction-item-detail .name")?.innerText;
+        if (!currentCustomerName) return;
+
+        let customers = JSON.parse(localStorage.getItem("customers")) || [];
+        let customer = customers.find(c => c.name.toUpperCase() === currentCustomerName);
+
+        if (customer) {
+            const recordsTable = row.closest('table');
+            const records = recordsTable ? Array.from(recordsTable.querySelectorAll('tbody tr')) : [];
+            const rowIndex = records.indexOf(row);
+
+            if (customer.records && customer.records[rowIndex]) {
+                const oldPrice = parseFloat(customer.records[rowIndex].price) || 0;
+                
+                // Update the pending record
+                customer.records[rowIndex] = {
+                    product: newProduct,
+                    qty: newQty,
+                    price: newPrice,
+                    date: newDate
+                };
+
+                // Adjust the total pending amount
+                let currentPending = parseFloat(customer.price) || 0;
+                customer.price = (currentPending - oldPrice + newPrice).toString();
+
+                localStorage.setItem("customers", JSON.stringify(customers));
+                
+                // Update the UI
+                row.innerHTML = `
+                    <td>${newProduct}</td>
+                    <td>${newQty}</td>
+                    <td>₹${newPrice}</td>
+                    <td>${newDate}</td>
+                    <td>
+                        <button class="row-edit" id="row-edit-pending">Edit</button>
+                        <button class="row-delete" id="row-delete-pending">Delete</button>
+                    </td>
+                `;
+                updateCustomerUI(customer);
+            }
+        }
+    }
+
+    if (e.target && e.target.classList.contains("cancel-row-pending")) {
+        const row = e.target.closest("tr");
+        const rowIndex = Array.from(row.parentNode.children).indexOf(row);
+
+        const currentCustomerName = document.querySelector("#transaction-item-detail .name")?.innerText;
+        if (!currentCustomerName) return;
+
+        let customers = JSON.parse(localStorage.getItem("customers")) || [];
+        let customer = customers.find(c => c.name.toUpperCase() === currentCustomerName);
+
+        if (customer && customer.records && customer.records[rowIndex]) {
+            const rec = customer.records[rowIndex];
+            row.innerHTML = `
+                <td>${rec.product}</td>
+                <td>${rec.qty}</td>
+                <td>₹${rec.price}</td>
+                <td>${rec.date}</td>
+                <td>
+                    <button class="row-edit" id="row-edit-pending">Edit</button>
+                    <button class="row-delete" id="row-delete-pending">Delete</button>
+                </td>
+            `;
+        }
+    }
+
+    if (e.target && e.target.id === "row-delete-pending") {
+        const row = e.target.closest("tr");
+        const rowIndex = Array.from(row.parentNode.children).indexOf(row);
+        
+        const currentCustomerName = document.querySelector("#transaction-item-detail .name")?.innerText;
+        if (!currentCustomerName) return;
+
+        let customers = JSON.parse(localStorage.getItem("customers")) || [];
+        let customer = customers.find(c => c.name.toUpperCase() === currentCustomerName);
+
+        if (customer && customer.records) {
+            const oldPrice = parseFloat(customer.records[rowIndex].price) || 0;
+
+            // Remove the record from the records array
+            customer.records.splice(rowIndex, 1);
+            
+            // Adjust the total pending amount
+            let currentPending = parseFloat(customer.price) || 0;
+            customer.price = (currentPending - oldPrice).toString();
+            
+            localStorage.setItem("customers", JSON.stringify(customers));
+
+            // Remove the row from the UI
+            row.remove();
+            updateCustomerUI(customer);
+        }
+    }
+});
+
+
+
+
+
+
+// New event listener for the "Delete Customer" button
+document.addEventListener("click", (e) => {
+    if (e.target.id === "delete-customer-btn-final" || e.target.closest("#delete-customer-btn-final")) {
+        const popupOverlay = document.getElementById("delete-popup-overlay");
+        const confirmBtn = document.getElementById("confirm-delete-btn");
+        const cancelBtn = document.getElementById("cancel-delete-btn");
+
+        // Show the pop-up
+        popupOverlay.style.display = "flex";
+
+        // Handle the confirm (Yes) button click
+        const handleConfirm = () => {
+            const currentCustomerName = document.querySelector("#edit-customer-aside .name").innerText;
+            let customers = JSON.parse(localStorage.getItem("customers")) || [];
+            
+            // Filter out the customer to be deleted
+            const updatedCustomers = customers.filter(cust => cust.name.toUpperCase() !== currentCustomerName);
+            
+            // Save the updated list back to localStorage
+            localStorage.setItem("customers", JSON.stringify(updatedCustomers));
+            
+            // Hide the pop-up and update the UI
+            popupOverlay.style.display = "none";
+            location.reload(); // Reload the page to reset the UI completely
+        };
+
+        // Handle the cancel (No) button click
+        const handleCancel = () => {
+            popupOverlay.style.display = "none";
+        };
+
+        // Add event listeners for the pop-up buttons
+        confirmBtn.addEventListener("click", handleConfirm, { once: true }); // Use {once: true} to prevent multiple handlers
+        cancelBtn.addEventListener("click", handleCancel, { once: true });
+    }
+});
+
+// Get all buttons
+const buttons = document.querySelectorAll("button");
+
+// Loop through all buttons
+buttons.forEach(btn => {
+  btn.addEventListener("mouseover", () => {
+    if (btn.textContent.trim().toLowerCase() === "edit") {
+      btn.style.border = "1px solid black";
+    } else if (btn.textContent.trim().toLowerCase() === "delete") {
+      btn.style.border = "1px solid red";
+    }
+  });
+
+  btn.addEventListener("mouseout", () => {
+    // remove border when hover ends
+    btn.style.border = "none";
+  });
+});
+
+  </script>
+</body>
+</html>
